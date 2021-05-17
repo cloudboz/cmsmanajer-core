@@ -1,4 +1,10 @@
-# Core
+# Business Flow
+
+# Requirements
+- Your server must be Ubuntu 18.04 or 20.04 (64-bit). 
+- Only clean servers (no Nginx, Apache, or MySQL installed) can be connected to CMS Manajer.
+
+# How to Use
 
 ## Todo
 - [ ] Generate ssh-key with  `ssh-keygen` > files/`id_rsa` & files/`id_rsa.pub`
@@ -8,6 +14,10 @@
 - [ ] Install LAMP (Linux, Apache, MariaDB and PHP)
 - [ ] Install LEMP + CMS `WordPress`
 - [ ] Install SFTP
+Enabling automatic package updates.
+install postfix
+php-fpm
+testing server configuration
 
 ---
 

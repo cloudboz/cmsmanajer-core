@@ -1,68 +1,25 @@
-#################################################
-# DO Community Playbooks: Initial Server Setup
-#################################################
 ---
-- hosts: all
-  become: true
-  vars_files:
-    - vars/default.yml
+- name: "Running command : update and upgrade systems"
+  apt:
+    update_cache: yes
+    upgrade: dist
+    autoremove: yes
 
-  tasks:
-    - name: Install Prerequisites
-      apt: name=aptitude update_cache=yes state=latest force_apt_get=yes
-
-# Sudo Group Setup
-    - name: Make sure we have a 'wheel' group
-      group:
-        name: wheel
-        state: present
-
-    - name: Allow 'wheel' group to have passwordless sudo
-      lineinfile:
-        path: /etc/sudoers
-        state: present
-        regexp: '^%wheel'
-        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
-        validate: '/usr/sbin/visudo -cf %s'
-
-# User + Key Setup
-    - name: Create a new regular user with sudo privileges
-      user:
-        name: "{{ create_user }}"
-        state: present
-        groups: wheel
-        append: true
-        create_home: true
-        shell: /bin/bash
-
-    - name: Set authorized key for remote user
-      authorized_key:
-        user: "{{ create_user }}"
-        state: present
-        key: "{{ copy_local_key }}"
-
-    - name: Disable password authentication for root
-      lineinfile:
-        path: /etc/ssh/sshd_config
-        state: present
-        regexp: '^#?PermitRootLogin'
-        line: 'PermitRootLogin prohibit-password'
-
-# Install Packages
-    - name: Update apt
-      apt: update_cache=yes
-
-    - name: Install required system packages
-      apt: name={{ sys_packages }} state=latest
-
-# UFW Setup
-    - name: UFW - Allow SSH connections
-      ufw:
-        rule: allow
-        name: OpenSSH
-
-    - name: UFW - Deny all other incoming traffic by default
-      ufw:
-        state: enabled
-        policy: deny
-        direction: incoming
+- name: "Running command : install systems dependencies"
+  apt:
+    name: 
+      - git
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+      - zip
+      - unzip
+      - build-essential
+      - ncdu
+      - htop
+      - net-tools
+      - vim
+      - ufw
+    state: present
