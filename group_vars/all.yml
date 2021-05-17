@@ -1,0 +1,12 @@
+# ssh
+ansible_connection: ssh
+ansible_user: sgnd
+ansible_ssh_pass: 4esz3wa2q1
+ansible_python_interpreter: /usr/bin/python3
+
+# users
+pass_auth: PasswordAuthentication yes
+pubkey_auth: PubkeyAuthentication yes
+
+# certbot
+certbot_repository: "ppa:certbot/certbot"
