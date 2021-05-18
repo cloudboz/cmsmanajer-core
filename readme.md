@@ -1,7 +1,8 @@
 # Core
-CMS Manajer Core is tool to install application pack like LAMP, LEMP, CMS (WordPress, PrestaShop, MediaWiki, Moodle, etc).
+Core is tool to install application pack like LAMP, LEMP, CMS (WordPress, PrestaShop, MediaWiki, Moodle, etc).
 
 # Features
+Our tool can support multiple apps
 ## Developer Tools
 - [x] LAMP
 - [x] LEMP
@@ -13,13 +14,11 @@ CMS Manajer Core is tool to install application pack like LAMP, LEMP, CMS (WordP
 - [x] WordPress
 - [ ] Drupal
 - [ ] Joomla!
-- [ ] Ghost
 
 ### E-commerce
 - [ ] PrestaShop
 - [ ] Magento
 - [ ] OpenCart
-- [ ] AbanteCart
 
 ### Wiki
 - [ ] MediaWiki
@@ -27,7 +26,6 @@ CMS Manajer Core is tool to install application pack like LAMP, LEMP, CMS (WordP
 
 ### Forum
 - [ ] phpBB
-- [ ] myBB
 
 ### E-learning
 - [ ] Moodle
@@ -36,7 +34,7 @@ CMS Manajer Core is tool to install application pack like LAMP, LEMP, CMS (WordP
 - [ ] Matomo
 
 ## Request
-- Request more CMS to `hello@cmsmanajer.com`
+Request more CMS to `hello@cmsmanajer.com`
 
 # Docs
 Read the documentation [here](docs/readme.md)
