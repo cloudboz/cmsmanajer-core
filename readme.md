@@ -3,34 +3,34 @@ Core is tool to install application pack like LAMP, LEMP, CMS (WordPress, Presta
 
 # Features
 Our tool can support multiple apps
-## Developer Tools
+
+**Developer Tools**
 - [x] LAMP
 - [x] LEMP
 - [ ] LAPP
 - [ ] LEPP
 
-## CMS
-### Blog
+**CMS Blog**
 - [x] WordPress
 - [ ] Drupal
 - [ ] Joomla!
 
-### E-commerce
+**CMS E-commerce**
 - [ ] PrestaShop
 - [ ] Magento
 - [ ] OpenCart
 
-### Wiki
+**Wiki**
 - [ ] MediaWiki
 - [ ] DokuWiki
 
-### Forum
+**Forum**
 - [ ] phpBB
 
-### E-learning
+**E-learning**
 - [ ] Moodle
 
-### Analytics
+**Analytics**
 - [ ] Matomo
 
 ## Request

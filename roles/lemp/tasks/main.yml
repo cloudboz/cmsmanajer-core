@@ -1,82 +1,74 @@
-##################################################
-# DO Community Playbooks: LEMP on Ubuntu 18.04
-##################################################
 ---
-- hosts: all
-  become: true
-  vars_files:
-    - vars/default.yml
+- name : vars
+  include_vars :
+    dir: vars
+    files_matching: default.yml
 
-  tasks:
-    - name: Install Prerequisites
-      apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
-      loop: [ 'aptitude' ]
-
-    - name: Install LEMP Packages
-      apt: name={{ item }} update_cache=yes state=latest
-      loop: [ 'nginx', 'mysql-server', 'python3-pymysql', 'php-fpm', 'php-mysql' ]
+- name: "Running command : install LEMP"
+  apt: name={{ item }}
+  loop:
+    - nginx
+    - mysql-server
+    - python3-pymysql
+    - php
+    - php-fpm
+    - php-mysql
     
-# Nginx Configuration
-    - name: Sets Nginx conf file
-      template:
-        src: "files/nginx.conf.j2"
-        dest: "/etc/nginx/sites-available/{{ http_conf }}"
+- name: "Running command : create document root"
+  file:
+    path: "/var/www/html/{{ app_domain }}"
+    state: directory
+    owner: "{{ app_username }}"
+    mode: '0755'
 
-    - name: Enables new site
-      file:
-        src: "/etc/nginx/sites-available/{{ http_conf }}"
-        dest: "/etc/nginx/sites-enabled/{{ http_conf }}"
-        state: link
-      notify: Reload Nginx
-    
-    - name: Removes "default" site
-      file:
-        path: "/etc/nginx/sites-enabled/default"
-        state: absent
-      notify: Reload Nginx
+- name: "Running command : set up nginx virtualhost"
+  template:
+    src: "files/{{ item }}"
+    dest: "/etc/nginx/sites-available/{{ app_config }}"
+  with_items:
+    - nginx.conf.j2
+  notify: Reload Nginx
 
-# MySQL Configuration
-    - name: Sets the root password 
-      mysql_user: 
-        name: root 
-        password: "{{ mysql_root_password }}"
-        login_unix_socket: /var/run/mysqld/mysqld.sock
+- name: "Running command : copy index.html and info.php"
+  copy: 
+    src: "{{ item }}"
+    dest: "/var/www/html/{{ app_domain }}"
+  with_items:
+    - index.html
+    - info.php
 
-    - name: Removes all anonymous user accounts
-      mysql_user:
-        name: ''
-        host_all: yes
-        state: absent
-        login_user: root
-        login_password: "{{ mysql_root_password }}"
+- name: "Running command : enable new site"
+  file:
+    src: "/etc/nginx/sites-available/{{ app_config }}"
+    dest: "/etc/nginx/sites-enabled/{{ app_config }}"
+    state: link
+  notify: Reload Nginx
 
-    - name: Removes the MySQL test database
-      mysql_db: 
-        name: test 
-        state: absent
-        login_user: root
-        login_password: "{{ mysql_root_password }}"
+- name: "Running command : disable default nginx site"
+  file:
+    path: "/etc/nginx/sites-enabled/default"
+    state: absent
+  notify: Reload Nginx
 
-# UFW Configuration
-    - name: "UFW - Allow HTTP on port {{ http_port }}"
-      ufw:
-        rule: allow
-        port: "{{ http_port }}"
-        proto: tcp
+- name: "Running command : sets the root password"
+  mysql_user:
+    name: "{{ mysql_root_username }}"
+    password: "{{ mysql_root_password }}"
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
 
-# Sets Up PHP Info Page
-    - name: Sets Up PHP Info Page
-      template:
-        src: "files/info.php.j2"
-        dest: "/var/www/html/info.php"
+- name: "Running command : removes all anonymous user accounts"
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
 
-  handlers:
-    - name: Reload Nginx
-      service:
-        name: nginx
-        state: reloaded
-
-    - name: Restart Nginx
-      service:
-        name: nginx
-        state: restarted
+- name: "Running command : removes the test database"
+  mysql_db:
+    name: test
+    state: absent
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"

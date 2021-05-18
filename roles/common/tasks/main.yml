@@ -7,19 +7,21 @@
 
 - name: "Running command : install systems dependencies"
   apt:
-    name: 
-      - git
+    name:
       - apt-transport-https
+      - gnupg
+      - gnupg-agent
       - ca-certificates
       - curl
-      - gnupg-agent
       - software-properties-common
+      - build-essential
+      - net-tools
+      - htop
+      - ncdu
+      - vim
+      - nano
+      - ufw
+      - git
       - zip
       - unzip
-      - build-essential
-      - ncdu
-      - htop
-      - net-tools
-      - vim
-      - ufw
     state: present

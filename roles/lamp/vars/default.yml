@@ -1,7 +1,20 @@
 ---
-mysql_root_password: mysql_root_password
-app_user: cmsmanajer
-http_host: your_domain
-http_conf: your_domain.conf
+# MySQL
+mysql_root_username: root
+mysql_root_password: cmsm-auto-generated
+
+app_username: ubuntu
+app_password: cmsm-auto-generated
+app_database: cmsm-auto-generated
+
+# Apache2
+app_domain: woy.cmsmanajer.com
+app_config: woy.cmsmanajer.com.conf
+
+# PHP
+php_version: 8.0
+
+# UFW
 http_port: 80
+https_port: 443
 disable_default: true

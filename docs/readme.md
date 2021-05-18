@@ -3,6 +3,8 @@
 # Requirements
 - Your server must be Ubuntu 18.04 or 20.04 (64-bit). 
 - Only clean servers (no Nginx, Apache, or MySQL installed) can be connected to CMS Manajer.
+- Installed python2.7 or python3.
+- Minimum of RAM 256MB
 
 # How to Use
 

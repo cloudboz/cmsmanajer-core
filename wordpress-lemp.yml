@@ -8,7 +8,7 @@
   become: true
   gather_facts: no
   roles:
-    - lemp
+    - wordpress-lemp
   handlers:
     - name: Reload Nginx
       service:
