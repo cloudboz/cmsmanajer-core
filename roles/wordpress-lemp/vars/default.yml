@@ -5,24 +5,20 @@ mysql_root_username: root
 mysql_root_password: cmsm-auto-generated
 
 app_username: ubuntu
-app_password: cmsm-done
-app_database: cmsm-done
+app_password: cmsm-yes
+app_database: cmsm-yes
+app_dbprefix: wp_
 
 # WP
-wordpress_db_user: ubuntu
-wordpress_db_user_pass: cmsm-done
-wordpress_db_name: cmsm-done
-wordpress_db_prefix: wpx_
-
-wordpress_home_url: http://done.cmsmanajer.com
+wordpress_home_url: http://yes.cmsmanajer.com
 wordpress_site_title: CMS Manajer
 wordpress_admin_user: cmsmanajer
 wordpress_admin_user_pass: cmsmanajer
 wordpress_admin_email: email@example.com
 
 # Nginx
-app_domain: done.cmsmanajer.com
-app_config: done.cmsmanajer.com.conf
+app_domain: yes.cmsmanajer.com
+app_config: yes.cmsmanajer.com.conf
 
 # PHP
 php_version: 8.0

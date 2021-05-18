@@ -113,10 +113,10 @@
   command: wp core config
             --allow-root
             --path="/var/www/{{ app_domain }}"
-            --dbname="{{ wordpress_db_name }}"
-            --dbuser="{{ wordpress_db_user }}"
-            --dbpass="{{ wordpress_db_user_pass }}"
-            --dbprefix="{{ wordpress_db_prefix }}"
+            --dbname="{{ app_database }}"
+            --dbuser="{{ app_username }}"
+            --dbpass="{{ app_password }}"
+            --dbprefix="{{ app_dbprefix }}"
 
 # - name: "Running command : setup wp-config.php"
 #   template:
