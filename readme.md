@@ -11,7 +11,7 @@ Our tool can support multiple apps
 - [ ] LEPP
 
 **CMS Blog**
-- [x] WordPress
+- [x] WordPress (LAMP/LEMP)
 - [ ] Drupal
 - [ ] Joomla!
 
