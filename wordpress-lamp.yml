@@ -1,0 +1,21 @@
+- hosts: all
+  become: true
+  gather_facts: no
+  roles:
+    - common
+    
+- hosts: all
+  become: true
+  gather_facts: no
+  roles:
+    - wordpress-lamp
+  handlers:
+  - name: Reload Apache
+    service:
+      name: apache2
+      state: reloaded
+
+  - name: Restart Apache
+    service:
+      name: apache2
+      state: restarted
