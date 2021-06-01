@@ -35,28 +35,28 @@
   when: disable_default
   notify: Reload Apache
 
-- name: "Running command : sets the root password"
-  mysql_user:
-    name: "{{ mysql_root_username }}"
-    password: "{{ mysql_root_password }}"
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
-    login_unix_socket: /var/run/mysqld/mysqld.sock
+# - name: "Running command : sets the root password"
+#   mysql_user:
+#     name: "{{ mysql_root_username }}"
+#     password: "{{ mysql_root_password }}"
+#     login_user: "{{ mysql_root_username }}"
+#     login_password: "{{ mysql_root_password }}"
+#     login_unix_socket: /var/run/mysqld/mysqld.sock
 
-- name: "Running command : removes all anonymous user accounts"
-  mysql_user:
-    name: ''
-    host_all: yes
-    state: absent
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
+# - name: "Running command : removes all anonymous user accounts"
+#   mysql_user:
+#     name: ''
+#     host_all: yes
+#     state: absent
+#     login_user: "{{ mysql_root_username }}"
+#     login_password: "{{ mysql_root_password }}"
 
-- name: "Running command : removes the test database"
-  mysql_db:
-    name: test
-    state: absent
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
+# - name: "Running command : removes the test database"
+#   mysql_db:
+#     name: test
+#     state: absent
+#     login_user: "{{ mysql_root_username }}"
+#     login_password: "{{ mysql_root_password }}"
 
 - name: "Running command : creates database for WordPress"
   mysql_db:
