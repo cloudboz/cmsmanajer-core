@@ -1,6 +1,6 @@
 server {
         listen {{ http_port }};
-        root /var/www/html/{{ app_domain }};
+        root /var/www/{{ app_domain }};
         index index.php index.html index.htm index.nginx-debian.html;
         server_name {{ app_domain }};
 
