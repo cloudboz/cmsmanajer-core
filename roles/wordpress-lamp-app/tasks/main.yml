@@ -4,40 +4,36 @@
     dir: vars
     files_matching: default.yml
 
-- name: "Running command : install LEMP"
-  apt: name={{ item }}
-  loop:
-    - nginx
-    - mysql-server
-    - python3-pymysql
-    - php
-    - php-fpm
-    - php-mysql
+# - name: "Running command : install LAMP"
+#   apt: name={{ item }}
+#   loop:
+#     - apache2
+#     - mysql-server
+#     - python3-pymysql
+#     - php
+#     - php-mysql
+#     - libapache2-mod-php
 
-- name: "Running command : install PHP Extensions"
-  apt: name={{ item }}
-  loop: "{{ php_modules }}"
-
-- name: "Running command : set up nginx virtualhost"
+# - name: "Running command : install PHP Extensions"
+#   apt: name={{ item }}
+#   loop: "{{ php_modules }}"
+  
+- name: "Running command : set up apache virtualhost"
   template:
     src: "files/{{ item }}"
-    dest: "/etc/nginx/sites-available/{{ app_config }}"
+    dest: "/etc/apache2/sites-available/{{ app_config }}"
   with_items:
-    - nginx.conf.j2
-  notify: Reload Nginx
+    - apache.conf.j2
+  notify: Reload Apache
 
 - name: "Running command : enable new site"
-  file:
-    src: "/etc/nginx/sites-available/{{ app_config }}"
-    dest: "/etc/nginx/sites-enabled/{{ app_config }}"
-    state: link
-  notify: Reload Nginx
+  shell: /usr/sbin/a2ensite {{ app_config }}
+  notify: Reload Apache
 
-- name: "Running command : disable default nginx site"
-  file:
-    path: "/etc/nginx/sites-enabled/default"
-    state: absent
-  notify: Reload Nginx
+- name: "Running command : disable default apache site"
+  shell: /usr/sbin/a2dissite 000-default.conf
+  when: disable_default
+  notify: Reload Apache
 
 - name: "Running command : sets the root password"
   mysql_user:
@@ -77,7 +73,7 @@
     state: present
     login_user: "{{ mysql_root_username }}"
     login_password: "{{ mysql_root_password }}"
-    
+
 - name: "Running command : check if wp-cli exists"
   stat: path="/usr/bin/wp"
   register: wpcli_exist
@@ -149,4 +145,4 @@
 
 - name: "Running command : set permissions for files"
   shell: "/usr/bin/find /var/www/{{ app_domain }}/ -type f -exec chmod 640 {} \\;"
-  notify: Reload Nginx
+  notify: Reload Apache

@@ -4,19 +4,19 @@
     dir: vars
     files_matching: default.yml
 
-- name: "Running command : install LEMP"
-  apt: name={{ item }}
-  loop:
-    - nginx
-    - mysql-server
-    - python3-pymysql
-    - php
-    - php-fpm
-    - php-mysql
+# - name: "Running command : install LEMP"
+#   apt: name={{ item }}
+#   loop:
+#     - nginx
+#     - mysql-server
+#     - python3-pymysql
+#     - php
+#     - php-fpm
+#     - php-mysql
 
-- name: "Running command : install PHP Extensions"
-  apt: name={{ item }}
-  loop: "{{ php_modules }}"
+# - name: "Running command : install PHP Extensions"
+#   apt: name={{ item }}
+#   loop: "{{ php_modules }}"
 
 - name: "Running command : set up nginx virtualhost"
   template:
@@ -39,28 +39,28 @@
     state: absent
   notify: Reload Nginx
 
-- name: "Running command : sets the root password"
-  mysql_user:
-    name: "{{ mysql_root_username }}"
-    password: "{{ mysql_root_password }}"
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
-    login_unix_socket: /var/run/mysqld/mysqld.sock
+# - name: "Running command : sets the root password"
+#   mysql_user:
+#     name: "{{ mysql_root_username }}"
+#     password: "{{ mysql_root_password }}"
+#     login_user: "{{ mysql_root_username }}"
+#     login_password: "{{ mysql_root_password }}"
+#     login_unix_socket: /var/run/mysqld/mysqld.sock
 
-- name: "Running command : removes all anonymous user accounts"
-  mysql_user:
-    name: ''
-    host_all: yes
-    state: absent
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
+# - name: "Running command : removes all anonymous user accounts"
+#   mysql_user:
+#     name: ''
+#     host_all: yes
+#     state: absent
+#     login_user: "{{ mysql_root_username }}"
+#     login_password: "{{ mysql_root_password }}"
 
-- name: "Running command : removes the test database"
-  mysql_db:
-    name: test
-    state: absent
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
+# - name: "Running command : removes the test database"
+#   mysql_db:
+#     name: test
+#     state: absent
+#     login_user: "{{ mysql_root_username }}"
+#     login_password: "{{ mysql_root_password }}"
 
 - name: "Running command : creates database for WordPress"
   mysql_db:
