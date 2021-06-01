@@ -1,0 +1,14 @@
+---
+# Apache2
+app_domain: good.cmsmanajer.com
+app_config: good.cmsmanajer.com.conf
+
+app_username: ubuntu
+
+# PHP
+php_version: 8.0
+
+# UFW
+http_port: 80
+https_port: 443
+disable_default: true
