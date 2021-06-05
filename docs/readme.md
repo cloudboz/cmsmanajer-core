@@ -8,10 +8,12 @@
 
 ## How to Use
 - Connect server use `ansible-playbook cman-optimiz.yml`
+
 - Install lamp use `ansible-playbook cman-aemp.yml --tags "apache"`
 - Install lemp use `ansible-playbook cman-aemp.yml --tags "nginx"`
 - Install wp apache use `ansible-playbook cman-wordpress.yml --tags "apache"`
 - Install wp nginx use `ansible-playbook cman-wordpress.yml --tags "nginx"`
+
 - Create app apache use `ansible-playbook cman-aemp.yml --tags "create-app-apache"`
 - Create app nginx use `ansible-playbook cman-aemp.yml --tags "create-app-nginx"`
 - Create app wp apache use `ansible-playbook cman-wordpress.yml --tags "create-app-wp-apache"`
