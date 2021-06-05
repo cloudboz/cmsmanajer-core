@@ -1,0 +1,8 @@
+- hosts: all
+  become: true
+  gather_facts: yes
+  roles:
+    - cman-common
+    - cman-kernel
+    - cman-limits
+    - cman-swap

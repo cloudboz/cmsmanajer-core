@@ -1,0 +1,20 @@
+---
+- name: "Running command : backup /etc/sysctl.conf"
+  shell: cp /etc/sysctl.conf /etc/sysctl.conf.backup
+  args:
+    executable: /bin/bash
+
+- name: "Running command : copy kernel config to /etc/sysctl.conf"
+  copy: 
+    src: "{{ item }}"
+    dest: /etc
+    # owner: sgnd
+    # group: sgnd
+    # mode: 0400
+  with_items:
+    - sysctl.conf
+
+- name: "Running command : reload sysctl.conf"
+  shell: sysctl -p
+  args:
+    executable: /bin/bash

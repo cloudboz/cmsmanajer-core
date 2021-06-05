@@ -1,0 +1,28 @@
+---
+- name: "Running command : install PHP for Apache"
+  apt: name={{ item }}
+  loop:
+    - php
+    - php-mysql
+    - libapache2-mod-php
+  tags: 
+    - apache
+
+- name: "Running command : install PHP for NGINX"
+  apt: name={{ item }}
+  loop:
+    - php
+    - php-fpm
+    - php-mysql
+  tags: 
+    - nginx
+
+- name: "Running command : copy index.html and info.php"
+  copy: 
+    src: "{{ item }}"
+    dest: "/var/www/{{ app_domain }}"
+  with_items:
+    - info.php
+  tags:
+    - apache
+    - nginx

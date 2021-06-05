@@ -1,4 +1,4 @@
-# ssh
+# Ansible
 ansible_connection: ssh
 ansible_user: ubuntu
 ansible_ssh_pass: 4esz3wa2q1
@@ -6,9 +6,57 @@ ansible_sudo_pass: 4esz3wa2q1
 ansible_ssh_private_key_file: files/sgnd.pem
 ansible_python_interpreter: /usr/bin/python3
 
-# users
+# SSH
 pass_auth: PasswordAuthentication yes
 pubkey_auth: PubkeyAuthentication yes
 
-# certbot
-certbot_repository: "ppa:certbot/certbot"
+# Firewall
+http_port: 80
+https_port: 443
+disable_default: true
+
+# SWAP
+swap_file_path: /swapfile
+# Use any of the following suffixes
+# c=1
+# w=2
+# b=512
+# kB=1000
+# K=1024
+# MB=1000*1000
+# M=1024*1024
+# xM=M
+# GB=1000*1000*1000
+# G=1024*1024*1024
+swap_file_size: 1024
+swappiness: 1
+
+# PHP
+# php_version: soon
+php_modules: [ 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 'php-intl', 'php-zip' ]
+
+# Create Users
+username: test
+password: $6$mzIBN0uPu4uF$SJYjWTNMwFPbrtkHfUnBNqzlHt8HuL/dy4.le7Ih66166tbQEPATolWe/v5PwBSISCPBcDsbW6.xa8vW84odU.
+# mkpasswd --method=sha-512 : test
+
+# MySQL
+mysql_root_username: root
+mysql_root_password: root
+
+# Application & Database
+app_username: usus-buntu
+app_password: usus-buntu
+app_database: usus-buntu
+
+# Apache2 / NGINX
+app_domain: wp-apache2.cmsmanajer.com
+app_config: wp-apache2.cmsmanajer.com.conf
+
+# WordPress
+app_dbprefix: wp_
+wordpress_home_url: http://wp-apache2.cmsmanajer.com
+wordpress_site_title: CMS Manajer
+wordpress_admin_user: cmsmanajer
+wordpress_admin_user_pass: cmsmanajer
+wordpress_admin_email: email@example.com

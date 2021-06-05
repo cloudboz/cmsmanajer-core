@@ -1,0 +1,32 @@
+---
+- name: "Running command : create user '{{ username }}'"
+  user:
+    name: "{{ username }}"
+    password: "{{ password }}"
+    groups: sudo
+    state: present
+    shell: /bin/bash
+    system: no
+    createhome: yes
+    home: "/home/{{ username }}"
+
+- name: "Running command : replace sshd_config for pass auth"
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '{{item.From}}'
+    line: '{{item.To}}'
+  with_items:
+    - { From: 'PasswordAuthentication no', To: '{{pass_auth}}'}
+
+- name: "Running command : replace sshd_config for pubkey auth"
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '{{item.From}}'
+    line: '{{item.To}}'
+  with_items:
+    - { From: 'PubkeyAuthentication no', To: '{{pubkey_auth}}'}
+
+- name: "Running command : reload sshd service"
+  systemd:
+    state: restarted
+    name: sshd

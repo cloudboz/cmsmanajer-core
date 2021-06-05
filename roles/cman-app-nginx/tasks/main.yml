@@ -1,0 +1,56 @@
+---
+- name: "Running command : install NGINX"
+  apt: name={{ item }}
+  loop:
+    - nginx
+  tags:
+    - nginx
+    
+- name: "Running command : create document root"
+  file:
+    path: "/var/www/{{ app_domain }}"
+    state: directory
+    owner: "{{ app_username }}"
+    mode: '0755'
+  tags:
+    - nginx
+    - create-app-nginx
+
+- name: "Running command : set up nginx virtualhost"
+  template:
+    src: "files/{{ item }}"
+    dest: "/etc/nginx/sites-available/{{ app_config }}"
+  with_items:
+    - nginx.conf.j2
+  notify: Reload Nginx
+  tags:
+    - nginx
+    - create-app-nginx
+
+- name: "Running command : copy index.html"
+  copy: 
+    src: "{{ item }}"
+    dest: "/var/www/{{ app_domain }}"
+  with_items:
+    - index.html
+  tags:
+    - nginx
+    - create-app-nginx
+
+- name: "Running command : enable new site"
+  file:
+    src: "/etc/nginx/sites-available/{{ app_config }}"
+    dest: "/etc/nginx/sites-enabled/{{ app_config }}"
+    state: link
+  notify: Reload Nginx
+  tags:
+    - nginx
+    - create-app-nginx
+
+- name: "Running command : disable default nginx site"
+  file:
+    path: "/etc/nginx/sites-enabled/default"
+    state: absent
+  notify: Reload Nginx
+  tags:
+    - nginx
