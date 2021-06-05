@@ -1,23 +1,40 @@
 ---
-- name: "Running command : install Apache"
+- name: "install apache"
   apt: name={{ item }}
   loop:
     - apache2
   tags:
     - apache
+    
+- name: "create folder {{ app_domain }}"
+  stat:
+    path: "/var/www/{{ app_domain }}"
+  register: appdomain
+  tags:
+    - apache
+    - create-app-apache
 
-- name: "Running command : create document root"
+- name: "directory is already existed"
+  debug:
+    msg: "directory is already existed"
+  when: appdomain.stat.exists
+  tags:
+    - apache
+    - create-app-apache
+
+- name: "create folder {{ app_domain }}"
   file:
     path: "/var/www/{{ app_domain }}"
     state: directory
     owner: www-data
     group: www-data
     mode: '0755'
+  when: appdomain.stat.exists == false
   tags:
     - apache
     - create-app-apache
 
-- name: "Running command : set up apache virtualhost"
+- name: "set up apache virtualhost"
   template:
     src: "files/{{ item }}"
     dest: "/etc/apache2/sites-available/{{ app_config }}"
@@ -28,7 +45,7 @@
     - apache
     - create-app-apache
 
-- name: "Running command : copy index.html"
+- name: "copy index.html"
   copy: 
     src: "{{ item }}"
     dest: "/var/www/{{ app_domain }}"
@@ -38,14 +55,14 @@
     - apache
     - create-app-apache
 
-- name: "Running command : enable new site"
+- name: "enable new site"
   shell: /usr/sbin/a2ensite {{ app_config }}
   notify: Reload Apache
   tags:
     - apache
     - create-app-apache
 
-- name: "Running command : disable default apache site"
+- name: "disable default apache site"
   shell: /usr/sbin/a2dissite 000-default.conf
   when: disable_default
   notify: Reload Apache

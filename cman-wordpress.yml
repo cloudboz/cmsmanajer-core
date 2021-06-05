@@ -6,6 +6,7 @@
     - cman-app-nginx
     - cman-app-mysql
     - cman-app-php
+    - cman-cms-wordpress-cli
     - cman-cms-wordpress
   handlers:
   - name: Reload Apache

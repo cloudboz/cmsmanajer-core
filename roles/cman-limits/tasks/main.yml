@@ -1,19 +1,12 @@
 ---
-- name: "Running command : backup /etc/security/limits.conf"
+- name: "backup /etc/security/limits.conf"
   shell: cp /etc/security/limits.conf /etc/security/limits.conf.backup
   args:
     executable: /bin/bash
 
-- name: "Running command : copy ulimits config to /etc/security/limits.conf"
+- name: "copy ulimits config to /etc/security/limits.conf"
   copy: 
     src: "{{ item }}"
     dest: /etc/security
   with_items:
     - limits.conf
-
-# - name: "Custom PAM limits"
-#   pam_limits:
-#     domain: joe
-#     limit_type: soft
-#     limit_item: nofile
-#     value: 64000

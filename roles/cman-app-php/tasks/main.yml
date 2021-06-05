@@ -1,5 +1,5 @@
 ---
-- name: "Running command : install PHP for Apache"
+- name: "install php for apache"
   apt: name={{ item }}
   loop:
     - php
@@ -8,7 +8,7 @@
   tags: 
     - apache
 
-- name: "Running command : install PHP for NGINX"
+- name: "install php for nginx"
   apt: name={{ item }}
   loop:
     - php
@@ -17,7 +17,7 @@
   tags: 
     - nginx
 
-- name: "Running command : copy index.html and info.php"
+- name: "copy info.php"
   copy: 
     src: "{{ item }}"
     dest: "/var/www/{{ app_domain }}"

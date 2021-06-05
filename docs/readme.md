@@ -18,3 +18,11 @@
 - Create app nginx use `ansible-playbook cman-aemp.yml --tags "create-app-nginx"`
 - Create app wp apache use `ansible-playbook cman-wordpress.yml --tags "create-app-wp-apache"`
 - Create app wp nginx use `ansible-playbook cman-wordpress.yml --tags "create-app-wp-nginx"`
+
+## Todo
+- [x] optimiz : connect update, upgrade, kernel, swap and limits.
+- [x] users : create users.
+- [x] lamp : apache, mysql, php.
+- [x] lamp-wp : apache, mysql, php, wp.
+- [x] lemp : nginx, mysql, php.
+- [x] lemp-wp : nginx, mysql, php, wp.

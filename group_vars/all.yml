@@ -31,12 +31,8 @@ swap_file_path: /swapfile
 swap_file_size: 1024
 swappiness: 1
 
-# PHP
-# php_version: soon
-# php_modules: [ 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 'php-intl', 'php-zip' ]
-
 # Create Users
-username: test
+username: test2
 password: $6$mzIBN0uPu4uF$SJYjWTNMwFPbrtkHfUnBNqzlHt8HuL/dy4.le7Ih66166tbQEPATolWe/v5PwBSISCPBcDsbW6.xa8vW84odU.
 # mkpasswd --method=sha-512 : test
 
@@ -45,17 +41,17 @@ mysql_root_username: root
 mysql_root_password: root
 
 # Application & Database
-app_username: usus-buntu
-app_password: usus-buntu
-app_database: usus-buntu
+app_username: 2wsx1qaz
+app_password: 2wsx1qaz
+app_database: 2wsx1qaz
 
 # Apache2 / NGINX
-app_domain: wp-apache2.cmsmanajer.com
-app_config: wp-apache2.cmsmanajer.com.conf
+app_domain: abcd.cmsmanajer.com
+app_config: abcd.cmsmanajer.com.conf
 
 # WordPress
-app_dbprefix: wp_
-wordpress_home_url: http://wp-apache2.cmsmanajer.com
+app_dbprefix: wpx_
+wordpress_home_url: http://abcd.cmsmanajer.com
 wordpress_site_title: CMS Manajer
 wordpress_admin_user: cmsmanajer
 wordpress_admin_user_pass: cmsmanajer

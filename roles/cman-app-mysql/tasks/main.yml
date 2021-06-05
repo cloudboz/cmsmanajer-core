@@ -1,5 +1,5 @@
 ---
-- name: "Running command : install MySQL"
+- name: "install mysql"
   apt: name={{ item }}
   loop:
     - mysql-server
@@ -8,7 +8,7 @@
     - apache
     - nginx
 
-- name: "Running command : sets the root password"
+- name: "sets the root password"
   no_log: true
   mysql_user:
     name: "{{ mysql_root_username }}"
@@ -20,7 +20,7 @@
     - apache
     - nginx
 
-- name: "Running command : removes all anonymous user accounts"
+- name: "removes all anonymous user accounts"
   no_log: true
   mysql_user:
     name: ''
@@ -32,7 +32,7 @@
     - apache
     - nginx
 
-- name: "Running command : removes the test database"
+- name: "removes the test database"
   mysql_db:
     name: test
     state: absent
@@ -42,7 +42,7 @@
     - apache
     - nginx
 
-- name: "Running command : creates database for App"
+- name: "creates database for App"
   no_log: true
   mysql_db:
     name: "{{ app_database }}"
@@ -54,7 +54,7 @@
     - create-app-wp-nginx
     - create-app-wp-apache
 
-- name: "Running command : create database user for App"
+- name: "create database user for App"
   no_log: true
   mysql_user:
     name: "{{ app_username }}"

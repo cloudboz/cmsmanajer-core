@@ -1,23 +1,40 @@
 ---
-- name: "Running command : install NGINX"
+- name: "install nginx"
   apt: name={{ item }}
   loop:
     - nginx
   tags:
     - nginx
-    
-- name: "Running command : create document root"
+
+- name: "create folder {{ app_domain }}"
+  stat:
+    path: "/var/www/{{ app_domain }}"
+  register: appdomain
+  tags:
+    - nginx
+    - create-app-nginx
+
+- name: "directory is already existed"
+  debug:
+    msg: "directory is already existed"
+  when: appdomain.stat.exists
+  tags:
+    - nginx
+    - create-app-nginx
+
+- name: "create folder {{ app_domain }}"
   file:
     path: "/var/www/{{ app_domain }}"
     state: directory
     owner: www-data
     group: www-data
     mode: '0755'
+  when: appdomain.stat.exists == false
   tags:
     - nginx
     - create-app-nginx
 
-- name: "Running command : set up nginx virtualhost"
+- name: "set up nginx virtualhost"
   template:
     src: "files/{{ item }}"
     dest: "/etc/nginx/sites-available/{{ app_config }}"
@@ -28,7 +45,7 @@
     - nginx
     - create-app-nginx
 
-- name: "Running command : copy index.html"
+- name: "copy index.html"
   copy: 
     src: "{{ item }}"
     dest: "/var/www/{{ app_domain }}"
@@ -38,7 +55,7 @@
     - nginx
     - create-app-nginx
 
-- name: "Running command : enable new site"
+- name: "enable new site"
   file:
     src: "/etc/nginx/sites-available/{{ app_config }}"
     dest: "/etc/nginx/sites-enabled/{{ app_config }}"
@@ -48,7 +65,7 @@
     - nginx
     - create-app-nginx
 
-- name: "Running command : disable default nginx site"
+- name: "disable default nginx site"
   file:
     path: "/etc/nginx/sites-enabled/default"
     state: absent

@@ -1,11 +1,11 @@
 ---
-- name: "Running command : update and upgrade systems"
+- name: "update and upgrade systems"
   apt:
     update_cache: yes
     upgrade: dist
     autoremove: yes
 
-- name: "Running command : install systems dependencies"
+- name: "install systems dependencies"
   apt:
     name:
       - apt-transport-https

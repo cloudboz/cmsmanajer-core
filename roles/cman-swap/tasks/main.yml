@@ -1,23 +1,23 @@
 ---
-- name: "Running command : create swap file"
+- name: "create swap file"
   command: dd if=/dev/zero of={{ swap_file_path }} bs=1M count={{ swap_file_size }}
           creates="{{ swap_file_path }}"
 
-- name: "Running command : change swap file permissions"
+- name: "change swap file permissions"
   file: path="{{ swap_file_path }}"
         owner=root
         group=root
         mode=0600
 
-- name: "Running command : check swap file type"
+- name: "check swap file type"
   command: file {{ swap_file_path }}
   register: swapfile
 
-- name: "Running command : make swap file"
+- name: "make swap file"
   command: "mkswap {{ swap_file_path }}"
   when: swapfile.stdout.find('swap file') == -1
 
-- name: "Running command : write swap entry in fstab"
+- name: "write swap entry in fstab"
   mount: name=none
          src={{ swap_file_path }}
          fstype=swap
@@ -26,6 +26,6 @@
          dump=0
          state=present
 
-- name: "Running command : mount swap"
+- name: "mount swap"
   command: "swapon {{ swap_file_path }}"
   when: ansible_swaptotal_mb < 1

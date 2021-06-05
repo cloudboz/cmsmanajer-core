@@ -1,7 +1,6 @@
 ---
-- name: "Running command : install PHP Extensions"
+- name: "install php modules"
   apt: name={{ item }}
-  # loop: "{{ php_modules }}"
   loop:
     - php-curl
     - php-gd
@@ -15,7 +14,7 @@
     - apache
     - nginx
   
-- name: "Running command : set up apache virtualhost"
+- name: "set up apache virtualhost"
   template:
     src: "files/{{ item }}"
     dest: "/etc/apache2/sites-available/{{ app_config }}"
@@ -26,7 +25,7 @@
     - apache
     - create-app-wp-apache
 
-- name: "Running command : set up nginx virtualhost"
+- name: "set up nginx virtualhost"
   template:
     src: "files/{{ item }}"
     dest: "/etc/nginx/sites-available/{{ app_config }}"
@@ -37,14 +36,14 @@
     - nginx
     - create-app-wp-nginx
 
-- name: "Running command : enable new site"
+- name: "enable new site"
   shell: /usr/sbin/a2ensite {{ app_config }}
   notify: Reload Apache
   tags:
     - apache
     - create-app-wp-apache
 
-- name: "Running command : enable new site"
+- name: "enable new site"
   file:
     src: "/etc/nginx/sites-available/{{ app_config }}"
     dest: "/etc/nginx/sites-enabled/{{ app_config }}"
@@ -54,14 +53,14 @@
     - nginx
     - create-app-wp-nginx
 
-- name: "Running command : disable default apache site"
+- name: "disable default apache site"
   shell: /usr/sbin/a2dissite 000-default.conf
   when: disable_default
   notify: Reload Apache
   tags:
     - apache
 
-- name: "Running command : disable default nginx site"
+- name: "disable default nginx site"
   file:
     path: "/etc/nginx/sites-enabled/default"
     state: absent
@@ -69,96 +68,51 @@
   tags:
     - nginx
 
-- name: "Running command : sets the root password"
-  mysql_user:
-    name: "{{ mysql_root_username }}"
-    password: "{{ mysql_root_password }}"
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
-    login_unix_socket: /var/run/mysqld/mysqld.sock
-  tags:
-    - apache
-    - nginx
-
-- name: "Running command : removes all anonymous user accounts"
-  mysql_user:
-    name: ''
-    host_all: yes
-    state: absent
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
-  tags:
-    - apache
-    - nginx
-
-- name: "Running command : removes the test database"
-  mysql_db:
-    name: test
-    state: absent
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
-  tags:
-    - apache
-    - nginx
-
-- name: "Running command : check if wp-cli exists"
-  stat: path="/usr/bin/wp"
-  register: wpcli_exist
-  tags:
-    - apache
-    - nginx
-    - create-app-wp-nginx
-    - create-app-wp-apache
-
-- name: "Running command : updating wp-cli"
-  shell: "/usr/bin/wp cli update --yes"
-  when: wpcli_exist.stat.exists
-  tags:
-    - apache
-    - nginx
-    - create-app-wp-nginx
-    - create-app-wp-apache
-
-- name: "Running command : install wp-cli"
-  get_url:
-    url="https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
-    dest="/usr/bin/wp"
-    force_basic_auth=yes
-    mode=0755
-  when: not wpcli_exist.stat.exists
-  tags:
-    - apache
-    - nginx
-    - create-app-wp-nginx
-    - create-app-wp-apache
-
-- name: "Running command : download and unpack latest WordPress"
+- name: "download and unpack latest WordPress"
   unarchive:
     src: https://wordpress.org/latest.tar.gz
     dest: "/var/www"
     remote_src: yes
     creates: "/var/www/wordpress"
+    owner: www-data
+    group: www-data
+    mode: "755"
   tags:
     - apache
     - nginx
     - create-app-wp-nginx
     - create-app-wp-apache
 
-- name: "Running command : rename wordpress folder"
-  shell: "mv /var/www/wordpress /var/www/{{ app_domain }}"
+- name: "create folder {{ app_domain }}"
+  stat:
+    path: "/var/www/{{ app_domain }}"
+  register: wpapp
   tags:
     - apache
     - nginx
     - create-app-wp-nginx
     - create-app-wp-apache
 
-# - name: Configure WordPress
-#   # become: "{{ app_username }}"
-#   command: wp core download
-#             --allow-root
-#             --path="/var/www/{{ app_domain }}"
+- name: "directory is already existed"
+  debug:
+    msg: "directory is already existed"
+  when: wpapp.stat.exists
+  tags:
+    - apache
+    - nginx
+    - create-app-wp-nginx
+    - create-app-wp-apache
 
-- name: Configure WordPress
+- name: "rename wordpress folder"
+  shell: "mv /var/www/wordpress/* /var/www/{{ app_domain }}"
+  # when: wpapp.stat.exists == false
+  tags:
+    - apache
+    - nginx
+    - create-app-wp-nginx
+    - create-app-wp-apache
+
+- name: "configure wordpress"
   command: wp core config
             --allow-root
             --path="/var/www/{{ app_domain }}"
@@ -172,14 +126,7 @@
     - create-app-wp-nginx
     - create-app-wp-apache
 
-# - name: "Running command : setup wp-config.php"
-#   template:
-#     src: "files/{{ item }}"
-#     dest: "/var/www/{{ app_domain }}/wp-config.php"
-#   with_items:
-#     - wp-config.php.j2
-
-- name: "Running command : install WordPress tables"
+- name: "install wordpress tables"
   command: wp core install
             --allow-root
             --path="/var/www/{{ app_domain }}"
@@ -194,35 +141,36 @@
     - create-app-wp-nginx
     - create-app-wp-apache
 
-- name: "Running command : set ownership"
+- name: "set ownership"
   file:
     path: "/var/www/{{ app_domain }}"
     state: directory
     recurse: yes
     owner: www-data
     group: www-data
+    mode: "755"
   tags:
     - apache
     - nginx
     - create-app-wp-nginx
     - create-app-wp-apache
 
-- name: "Running command : set permissions for directories"
-  shell: "/usr/bin/find /var/www/{{ app_domain }}/ -type d -exec chmod 750 {} \\;"
+- name: "set permissions for directories"
+  shell: "/usr/bin/find /var/www/{{ app_domain }}/ -type d -exec chmod 755 {} \\;"
   tags:
     - apache
     - nginx
     - create-app-wp-nginx
     - create-app-wp-apache
 
-- name: "Running command : set permissions for files"
+- name: "set permissions for files"
   shell: "/usr/bin/find /var/www/{{ app_domain }}/ -type f -exec chmod 640 {} \\;"
   notify: Reload Apache
   tags:
     - apache
     - create-app-wp-apache
 
-- name: "Running command : set permissions for files"
+- name: "set permissions for files"
   shell: "/usr/bin/find /var/www/{{ app_domain }}/ -type f -exec chmod 640 {} \\;"
   notify: Reload Nginx
   tags:
