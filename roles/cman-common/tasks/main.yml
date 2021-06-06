@@ -24,4 +24,5 @@
       - git
       - zip
       - unzip
+      - rsync
     state: present

@@ -68,6 +68,35 @@
   tags:
     - nginx
 
+- name: "create folder {{ app_domain }}"
+  stat:
+    path: "/var/www/{{ app_domain }}"
+  register: wpapp
+  tags:
+    - apache
+    - nginx
+    - create-app-wp-nginx
+    - create-app-wp-apache
+
+- name: "directory is already existed"
+  shell: "rm -fr /var/www/{{ app_domain }}"
+  args:
+    warn: false
+  when: wpapp.stat.exists
+  tags:
+    - apache
+    - nginx
+    - create-app-wp-nginx
+    - create-app-wp-apache
+
+- name: Wait until deleted
+  wait_for:
+    path: "/var/www/{{ app_domain }}"
+    state: absent
+  tags:
+    - create-app-wp-nginx 
+    - create-app-wp-apache
+
 - name: "download and unpack latest WordPress"
   unarchive:
     src: https://wordpress.org/latest.tar.gz
@@ -83,33 +112,22 @@
     - create-app-wp-nginx
     - create-app-wp-apache
 
-- name: "create folder {{ app_domain }}"
-  stat:
-    path: "/var/www/{{ app_domain }}"
-  register: wpapp
-  tags:
-    - apache
-    - nginx
-    - create-app-wp-nginx
-    - create-app-wp-apache
-
-- name: "directory is already existed"
-  debug:
-    msg: "directory is already existed"
-  when: wpapp.stat.exists
-  tags:
-    - apache
-    - nginx
-    - create-app-wp-nginx
-    - create-app-wp-apache
-
 - name: "rename wordpress folder"
-  shell: "mv /var/www/wordpress/* /var/www/{{ app_domain }}"
+  shell: "mv /var/www/wordpress /var/www/{{ app_domain }}"
   # when: wpapp.stat.exists == false
+  # shell: "rsync -a /var/www/wordpress /var/www/{{ app_domain }}"
   tags:
     - apache
     - nginx
     - create-app-wp-nginx
+    - create-app-wp-apache
+
+- name: Wait until moved
+  wait_for:
+    path: "/var/www/{{ app_domain }}"
+    state: present
+  tags:
+    - create-app-wp-nginx 
     - create-app-wp-apache
 
 - name: "configure wordpress"
