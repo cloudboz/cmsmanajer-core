@@ -67,3 +67,26 @@
     - create-database
     - create-app-wp-nginx
     - create-app-wp-apache
+
+# Cleanup
+- name: "Running command : delete database for App"
+  no_log: true
+  mysql_db:
+    name: "{{ app_database }}"
+    state: absent
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+  tags:
+    - delete-mysql-database
+
+- name: "Running command : delete database user for App"
+  no_log: true
+  mysql_user:
+    name: "{{ app_username }}"
+    password: "{{ app_password }}"
+    priv: "{{ app_database }}.*:ALL"
+    state: absent
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+  tags:
+    - delete-mysql-database

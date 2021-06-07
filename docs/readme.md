@@ -19,6 +19,12 @@
 - Create app wp apache use `ansible-playbook cman-wordpress.yml --tags "create-app-wp-apache"`
 - Create app wp nginx use `ansible-playbook cman-wordpress.yml --tags "create-app-wp-nginx"`
 
+- Delete app apache / apache wp use `ansible-playbook cman-aemp.yml --tags "delete-app-apache"`
+- Delete app nginx / nginx wp use `ansible-playbook cman-aemp.yml --tags "delete-app-nginx"`
+
+- Delete the last app (lamp) use `ansible-playbook cman-aemp.yml --tags "delete-lamp"`
+- Delete the last app (lemp) use `ansible-playbook cman-aemp.yml --tags "delete-lemp"`
+
 ## Todo
 - [x] optimiz : connect update, upgrade, kernel, swap and limits.
 - [x] users : create users.

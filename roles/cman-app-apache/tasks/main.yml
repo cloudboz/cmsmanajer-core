@@ -5,7 +5,7 @@
     - apache2
   tags:
     - apache
-    
+
 - name: "create folder {{ app_domain }}"
   stat:
     path: "/var/www/{{ app_domain }}"
@@ -68,3 +68,64 @@
   notify: Reload Apache
   tags:
     - apache
+
+## Cleanup
+- name: "Running command : check directory"
+  stat:
+    path: /var/www/{{ app_domain }}
+  register: app_dir
+  tags:
+    - delete-app-apache
+
+- name: "Running command : delete directory"
+  command: "rm -fr /var/www/{{ app_domain }}"
+  when: app_dir.stat.exists
+  tags:
+    - delete-app-apache
+
+- name: "Running message : if directory doesn't exist"
+  debug:
+    msg: "directory is doesn't exist"
+  when: app_dir.stat.exists == false
+  tags:
+    - delete-app-apache
+
+- name: "Running command : disable apache site"
+  shell: "/usr/sbin/a2dissite {{ app_config }}"
+  notify: Reload Apache
+  tags:
+    - delete-app-apache
+
+- name: "Running command : check directory"
+  stat:
+    path: /etc/apache2/sites-available/{{ app_config }}"
+  register: app_apache_available
+  tags:
+    - delete-app-apache
+
+- name: "Running command : delete site"
+  command: "rm /etc/apache2/sites-available/{{ app_config }}"
+  notify: Reload Apache
+  when: app_apache_available.stat.exists
+  tags:
+    - delete-app-apache
+
+- name: "Running message : if site-available doesn't exist"
+  debug:
+    msg: "directory is doesn't exist"
+  when: app_apache_available.stat.exists == false
+  tags:
+    - delete-app-apache
+
+# Cleanup
+- name: "Running command : uninstall LAMP"
+  apt: name={{ item }} status=absent
+  loop:
+    - apache2
+    - mysql-server
+    - python3-pymysql
+    - php
+    - php-mysql
+    - libapache2-mod-php
+  tags:
+    - delete-lamp

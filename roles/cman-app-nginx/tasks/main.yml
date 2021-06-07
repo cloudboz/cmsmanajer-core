@@ -72,3 +72,79 @@
   notify: Reload Nginx
   tags:
     - nginx
+
+# Cleanup
+- name: "Running command : check directory"
+  stat:
+    path: /var/www/{{ app_domain }}
+  register: app_dir
+  tags:
+    - delete-app-nginx
+
+- name: "Running command : delete directory"
+  command: "rm -fr /var/www/{{ app_domain }}"
+  when: app_dir.stat.exists
+  tags:
+    - delete-app-nginx
+
+- name: "Running message : if directory doesn't exist"
+  debug:
+    msg: "directory is doesn't exist"
+  when: app_dir.stat.exists == false
+  tags:
+    - delete-app-nginx
+
+- name: "Running command : check directory"
+  stat:
+    path: /etc/nginx/sites-available/{{ app_config }}"
+  register: app_nginx_available
+  tags:
+    - delete-app-nginx
+
+- name: "Running command : delete site"
+  command: "rm /etc/nginx/sites-available/{{ app_config }}"
+  notify: Reload Nginx
+  when: app_nginx_available.stat.exists
+  tags:
+    - delete-app-nginx
+
+- name: "Running message : if site available doesn't exist"
+  debug:
+    msg: "directory is doesn't exist"
+  when: app_nginx_available.stat.exists == false
+  tags:
+    - delete-app-nginx
+
+- name: "Running command : check directory"
+  stat:
+    path: /etc/nginx/sites-enabled/{{ app_config }}
+  register: app_nginx_enable
+  tags:
+    - delete-app-nginx
+
+- name: "Running command : delete site"
+  command: "rm /etc/nginx/sites-enabled/{{ app_config }}"
+  notify: Reload Nginx
+  when: app_nginx_enable.stat.exists
+  tags:
+    - delete-app-nginx
+
+- name: "Running message : if site-enable doesn't exist"
+  debug:
+    msg: "directory is doesn't exist"
+  when: app_nginx_enable.stat.exists == false
+  tags:
+    - delete-app-nginx
+
+# Cleanup LEMP
+- name: "Running command : uninstall LEMP"
+  apt: name={{ item }} state=absent
+  loop:
+    - nginx
+    - mysql-server
+    - python3-pymysql
+    - php
+    - php-fpm
+    - php-mysql
+  tags:
+    - delete-lemp
