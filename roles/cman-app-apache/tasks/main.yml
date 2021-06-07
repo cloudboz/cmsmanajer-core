@@ -124,8 +124,9 @@
     - apache2
     - mysql-server
     - python3-pymysql
-    - php
-    - php-mysql
-    - libapache2-mod-php
+    - php7.4
+    - php7.4-common
+    - php7.4-mysql
+    - libapache2-mod-php7.4
   tags:
     - delete-lamp

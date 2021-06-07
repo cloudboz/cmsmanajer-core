@@ -1,19 +1,32 @@
 ---
+- name: "check if ondrej/php ppa is already present"
+  stat:
+    path: "{{ php_sourcelist_path }}"
+  register: php_sourcelist_status
+
+- name: "add ondrej/php ppa"
+  apt_repository:
+    repo: 'ppa:ondrej/php'
+    state: present
+    update_cache: true
+  when: php_sourcelist_status.stat.exists == false
+
 - name: "install php for apache"
   apt: name={{ item }}
   loop:
-    - php
-    - php-mysql
-    - libapache2-mod-php
+    - php7.4
+    - php7.4-common
+    - php7.4-mysql
+    - libapache2-mod-php7.4
   tags: 
     - apache
 
 - name: "install php for nginx"
   apt: name={{ item }}
   loop:
-    - php
-    - php-fpm
-    - php-mysql
+    - php7.4
+    - php7.4-fpm
+    - php7.4-mysql
   tags: 
     - nginx
 
