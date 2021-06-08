@@ -5,8 +5,9 @@
     - mysql-server
     - python3-pymysql
   tags:
-    - apache
-    - nginx
+    - lamp-full-install
+    - lemp-full-install
+    - mysql-install
 
 - name: "sets the root password"
   no_log: true
@@ -17,9 +18,10 @@
     login_password: "{{ mysql_root_password }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
   tags:
-    - apache
-    - nginx
-
+    - lamp-full-install
+    - lemp-full-install
+    - mysql-install
+    
 - name: "removes all anonymous user accounts"
   no_log: true
   mysql_user:
@@ -29,8 +31,9 @@
     login_user: "{{ mysql_root_username }}"
     login_password: "{{ mysql_root_password }}"
   tags:
-    - apache
-    - nginx
+    - lamp-full-install
+    - lemp-full-install
+    - mysql-install
 
 - name: "removes the test database"
   mysql_db:
@@ -39,8 +42,9 @@
     login_user: "{{ mysql_root_username }}"
     login_password: "{{ mysql_root_password }}"
   tags:
-    - apache
-    - nginx
+    - lamp-full-install
+    - lemp-full-install
+    - mysql-install
 
 - name: "creates database for App"
   no_log: true
@@ -50,9 +54,13 @@
     login_user: "{{ mysql_root_username }}"
     login_password: "{{ mysql_root_password }}"
   tags:
-    - create-database
-    - create-app-wp-nginx
-    - create-app-wp-apache
+    - mysql-create-single-db
+    - wp-lamp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-create-single-app
+    - wp-lemp-create-single-app
+    - wp-lamp-full-uninstall
+    - wp-lemp-full-uninstall
 
 - name: "create database user for App"
   no_log: true
@@ -64,11 +72,23 @@
     login_user: "{{ mysql_root_username }}"
     login_password: "{{ mysql_root_password }}"
   tags:
-    - create-database
-    - create-app-wp-nginx
-    - create-app-wp-apache
+    - mysql-create-single-db
+    - wp-lamp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-create-single-app
+    - wp-lemp-create-single-app
+    - wp-lamp-full-uninstall
+    - wp-lemp-full-uninstall
 
 # Cleanup
+- name: "uninstall mysql"
+  apt: name={{ item }} state=absent
+  loop:
+    - mysql-server
+    - python3-pymysql
+  tags:
+    - mysql-uninstall
+
 - name: "Running command : delete database for App"
   no_log: true
   mysql_db:
@@ -77,7 +97,7 @@
     login_user: "{{ mysql_root_username }}"
     login_password: "{{ mysql_root_password }}"
   tags:
-    - delete-mysql-database
+    - mysql-delete-single-db
 
 - name: "Running command : delete database user for App"
   no_log: true
@@ -89,4 +109,4 @@
     login_user: "{{ mysql_root_username }}"
     login_password: "{{ mysql_root_password }}"
   tags:
-    - delete-mysql-database
+    - mysql-delete-single-db

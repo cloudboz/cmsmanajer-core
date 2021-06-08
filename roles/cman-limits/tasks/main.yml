@@ -3,6 +3,8 @@
   shell: cp /etc/security/limits.conf /etc/security/limits.conf.backup
   args:
     executable: /bin/bash
+  tags:
+    - connect-server
 
 - name: "copy ulimits config to /etc/security/limits.conf"
   copy: 
@@ -10,3 +12,5 @@
     dest: /etc/security
   with_items:
     - limits.conf
+  tags:
+    - connect-server

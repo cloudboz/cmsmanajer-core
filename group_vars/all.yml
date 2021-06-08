@@ -31,11 +31,18 @@ swap_file_path: /swapfile
 swap_file_size: 1024
 swappiness: 1
 
+# Docker
+docker_apt_release_channel: stable
+docker_apt_arch: amd64
+docker_apt_repository: "deb [arch={{ docker_apt_arch }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_apt_release_channel }}"
+docker_apt_gpg_key: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
+docker_compose_version: "1.28.5"
+
 #PHP
 php_sourcelist_path: "/etc/apt/sources.list.d/ppa_ondrej_php_{{ansible_distribution_release}}.list"
 
 # Create Users
-username: test2
+username: test
 password: $6$mzIBN0uPu4uF$SJYjWTNMwFPbrtkHfUnBNqzlHt8HuL/dy4.le7Ih66166tbQEPATolWe/v5PwBSISCPBcDsbW6.xa8vW84odU.
 # mkpasswd --method=sha-512 : test
 
@@ -44,17 +51,17 @@ mysql_root_username: root
 mysql_root_password: root
 
 # Application & Database
-app_username: 2wsx1qaz
-app_password: 2wsx1qaz
-app_database: 2wsx1qaz
+app_username: wps
+app_password: wps
+app_database: wps
 
 # Apache2 / NGINX
-app_domain: abcd.cmsmanajer.com
-app_config: abcd.cmsmanajer.com.conf
+app_domain: wps.cmsmanajer.com
+app_config: wps.cmsmanajer.com.conf
 
 # WordPress
 app_dbprefix: wpx_
-wordpress_home_url: http://abcd.cmsmanajer.com
+wordpress_home_url: http://wps.cmsmanajer.com
 wordpress_site_title: CMS Manajer
 wordpress_admin_user: cmsmanajer
 wordpress_admin_user_pass: cmsmanajer

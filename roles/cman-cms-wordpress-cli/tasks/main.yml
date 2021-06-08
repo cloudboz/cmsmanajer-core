@@ -3,19 +3,19 @@
   stat: path="/usr/bin/wp"
   register: wpcli_exist
   tags:
-    - apache
-    - nginx
-    - create-app-wp-nginx
-    - create-app-wp-apache
+    - wp-lamp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-create-single-app
+    - wp-lemp-create-single-app
 
 - name: "updating wp-cli"
   shell: "/usr/bin/wp cli update --yes"
   when: wpcli_exist.stat.exists
   tags:
-    - apache
-    - nginx
-    - create-app-wp-nginx
-    - create-app-wp-apache
+    - wp-lamp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-create-single-app
+    - wp-lemp-create-single-app
 
 - name: "install wp-cli"
   get_url:
@@ -25,7 +25,7 @@
     mode=0755
   when: not wpcli_exist.stat.exists
   tags:
-    - apache
-    - nginx
-    - create-app-wp-nginx
-    - create-app-wp-apache
+    - wp-lamp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-create-single-app
+    - wp-lemp-create-single-app

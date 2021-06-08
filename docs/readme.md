@@ -1,39 +1,74 @@
 # Business Flow
 
-## Requirements
+# Requirements
 - Your server must be Ubuntu 18.04 or 20.04 (64-bit). 
 - Only clean servers (no Nginx, Apache, or MySQL installed) can be connected to CMS Manajer.
 - Installed python2.7 or python3.
 - Minimum of RAM 256MB
 
-## How to Use
-### Connect server
-- Connect server use `ansible-playbook cman-optimiz.yml`
+# How to Use
+## Connect server
+```
+ansible-playbook cman.yml --tags "connect-server"
+```
+## Create system user
+```
+ansible-playbook cman.yml --tags "create-system-user"
+```
+## LAMP
+```
+ansible-playbook cman.yml --tags "lamp-full-install"
+ansible-playbook cman.yml --tags "lamp-full-uninstall"
 
-### Install app
-- Install lamp use `ansible-playbook cman-aemp.yml --tags "apache"`
-- Install lemp use `ansible-playbook cman-aemp.yml --tags "nginx"`
-- Install wp apache use `ansible-playbook cman-wordpress.yml --tags "apache"`
-- Install wp nginx use `ansible-playbook cman-wordpress.yml --tags "nginx"`
+ansible-playbook cman.yml --tags "lamp-create-single-app"
+ansible-playbook cman.yml --tags "lamp-delete-single-app" # This command also support for delete WordPress single app (Apache)
+```
+## LEMP
+```
+ansible-playbook cman.yml --tags "lemp-full-install"
+ansible-playbook cman.yml --tags "lemp-full-uninstall"
 
-### Create app
-- Create app apache use `ansible-playbook cman-aemp.yml --tags "create-app-apache"`
-- Create app nginx use `ansible-playbook cman-aemp.yml --tags "create-app-nginx"`
-- Create app wp apache use `ansible-playbook cman-wordpress.yml --tags "create-app-wp-apache"`
-- Create app wp nginx use `ansible-playbook cman-wordpress.yml --tags "create-app-wp-nginx"`
+ansible-playbook cman.yml --tags "lemp-create-single-app"
+ansible-playbook cman.yml --tags "lemp-delete-single-app" # This command also support for delete WordPress single app (Nginx)
+```
+## MySQL
+```
+ansible-playbook cman.yml --tags "mysql-install"
+ansible-playbook cman.yml --tags "mysql-uninstall"
+ansible-playbook cman.yml --tags "mysql-create-single-db"
+ansible-playbook cman.yml --tags "mysql-delete-single-db"
+```
+## WordPress (Apache)
+```
+ansible-playbook cman.yml --tags "wp-lamp-full-install"
+ansible-playbook cman.yml --tags "wp-lamp-full-uninstall"
 
-### Delete app
-- Delete app apache / apache wp use `ansible-playbook cman-aemp.yml --tags "delete-app-apache"`
-- Delete app nginx / nginx wp use `ansible-playbook cman-aemp.yml --tags "delete-app-nginx"`
-- Delete the last app (lamp) use `ansible-playbook cman-aemp.yml --tags "delete-lamp"`
-- Delete the last app (lemp) use `ansible-playbook cman-aemp.yml --tags "delete-lemp"`
+ansible-playbook cman.yml --tags "wp-lamp-create-single-app"
+```
+## WordPress (Nginx)
+```
+ansible-playbook cman.yml --tags "wp-lemp-full-install"
+ansible-playbook cman.yml --tags "wp-lemp-full-uninstall"
 
-## Todo
-- [x] optimiz : connect update, upgrade, kernel, swap and limits.
-- [x] users : create users.
-- [x] lamp : apache, mysql, php.
-- [x] lamp-wp : apache, mysql, php, wp.
-- [x] lemp : nginx, mysql, php.
-- [x] lemp-wp : nginx, mysql, php, wp.
-- [x] delete-app : nginx, apache, wp (apache & nginx).
-- [ ] custom-php : php7.4 or php8.0
+ansible-playbook cman.yml --tags "wp-lemp-create-single-app"
+```
+## Docker
+```
+ansible-playbook cman.yml --tags "docker-install"
+ansible-playbook cman.yml --tags "docker-uninstall"
+```
+## MongoDB
+```
+ansible-playbook cman.yml --tags "mongodb-install"
+ansible-playbook cman.yml --tags "mongodb-uninstall"
+```
+## Nginx
+```
+ansible-playbook cman.yml --tags "nginx-install"
+ansible-playbook cman.yml --tags "nginx-uninstall"
+```
+## Apache
+```
+ansible-playbook cman.yml --tags "apache-install"
+ansible-playbook cman.yml --tags "apache-uninstall"
+```

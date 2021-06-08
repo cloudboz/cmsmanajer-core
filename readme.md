@@ -7,13 +7,24 @@ Our tool can support multiple apps
 **Developer Tools**
 - [x] LAMP
 - [x] LEMP
-- [ ] LAPP
-- [ ] LEPP
+
+**Security**
+- [x] Optimiz
+- [x] Custom system user
+- [ ] SSL
+- [ ] SSL + Cloudflare
+
+**Single App**
+- [x] Nginx
+- [x] Apache
+- [x] Docker
+- [x] MongoDB
+- [x] MySQL
 
 **CMS Blog**
-- [x] WordPress (LAMP/LEMP)
-- [ ] Drupal
+- [x] WordPress (Apache/Nginx)
 - [ ] Joomla!
+- [ ] Drupal
 
 **CMS E-commerce**
 - [ ] PrestaShop

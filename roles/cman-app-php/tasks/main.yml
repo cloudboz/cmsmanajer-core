@@ -3,6 +3,9 @@
   stat:
     path: "{{ php_sourcelist_path }}"
   register: php_sourcelist_status
+  tags: 
+    - lamp-full-install
+    - lemp-full-install
 
 - name: "add ondrej/php ppa"
   apt_repository:
@@ -10,7 +13,10 @@
     state: present
     update_cache: true
   when: php_sourcelist_status.stat.exists == false
-
+  tags: 
+    - lamp-full-install
+    - lemp-full-install
+    
 - name: "install php for apache"
   apt: name={{ item }}
   loop:
@@ -19,7 +25,7 @@
     - php7.4-mysql
     - libapache2-mod-php7.4
   tags: 
-    - apache
+    - lamp-full-install
 
 - name: "install php for nginx"
   apt: name={{ item }}
@@ -28,7 +34,7 @@
     - php7.4-fpm
     - php7.4-mysql
   tags: 
-    - nginx
+    - lemp-full-install
 
 - name: "copy info.php"
   copy: 
@@ -36,6 +42,6 @@
     dest: "/var/www/{{ app_domain }}"
   with_items:
     - info.php
-  tags:
-    - apache
-    - nginx
+  tags: 
+    - lamp-full-install
+    - lemp-full-install
