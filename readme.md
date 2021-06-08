@@ -9,8 +9,9 @@ Our tool can support multiple apps
 - [x] LEMP
 
 **Security**
-- [x] Optimiz
+- [x] Optimiz kernel
 - [x] Custom system user
+- [x] Uninstaller
 - [ ] SSL
 - [ ] SSL + Cloudflare
 
