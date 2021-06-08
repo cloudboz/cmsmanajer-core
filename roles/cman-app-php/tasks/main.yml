@@ -6,6 +6,8 @@
   tags: 
     - lamp-full-install
     - lemp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-full-install
 
 - name: "add ondrej/php ppa"
   apt_repository:
@@ -16,6 +18,8 @@
   tags: 
     - lamp-full-install
     - lemp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-full-install
     
 - name: "install php for apache"
   apt: name={{ item }}
@@ -26,6 +30,7 @@
     - libapache2-mod-php7.4
   tags: 
     - lamp-full-install
+    - wp-lamp-full-install
 
 - name: "install php for nginx"
   apt: name={{ item }}
@@ -35,6 +40,7 @@
     - php7.4-mysql
   tags: 
     - lemp-full-install
+    - wp-lemp-full-install
 
 - name: "copy info.php"
   copy: 

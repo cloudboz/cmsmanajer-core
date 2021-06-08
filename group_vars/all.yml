@@ -51,17 +51,17 @@ mysql_root_username: root
 mysql_root_password: root
 
 # Application & Database
-app_username: wps
-app_password: wps
-app_database: wps
+app_username: yes
+app_password: yes
+app_database: yes
 
 # Apache2 / NGINX
-app_domain: wps.cmsmanajer.com
-app_config: wps.cmsmanajer.com.conf
+app_domain: yes.cmsmanajer.com
+app_config: yes.cmsmanajer.com.conf
 
 # WordPress
 app_dbprefix: wpx_
-wordpress_home_url: http://wps.cmsmanajer.com
+wordpress_home_url: http://yes.cmsmanajer.com
 wordpress_site_title: CMS Manajer
 wordpress_admin_user: cmsmanajer
 wordpress_admin_user_pass: cmsmanajer

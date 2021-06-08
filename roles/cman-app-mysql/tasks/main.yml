@@ -7,6 +7,8 @@
   tags:
     - lamp-full-install
     - lemp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-full-install
     - mysql-install
 
 - name: "sets the root password"
@@ -20,6 +22,8 @@
   tags:
     - lamp-full-install
     - lemp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-full-install
     - mysql-install
     
 - name: "removes all anonymous user accounts"
@@ -33,6 +37,8 @@
   tags:
     - lamp-full-install
     - lemp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-full-install
     - mysql-install
 
 - name: "removes the test database"
@@ -44,6 +50,8 @@
   tags:
     - lamp-full-install
     - lemp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-full-install
     - mysql-install
 
 - name: "creates database for App"
