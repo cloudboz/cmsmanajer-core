@@ -1,4 +1,4 @@
-# Ansible
+# ANSIBLE ENV
 ansible_connection: ssh
 ansible_user: ubuntu
 ansible_ssh_pass: 4esz3wa2q1
@@ -6,16 +6,16 @@ ansible_sudo_pass: 4esz3wa2q1
 ansible_ssh_private_key_file: files/sgnd.pem
 ansible_python_interpreter: /usr/bin/python3
 
-# SSH
+# SSH ENV
 pass_auth: PasswordAuthentication yes
 pubkey_auth: PubkeyAuthentication yes
 
-# Firewall
+# FIREWALL ENV
 http_port: 80
 https_port: 443
 disable_default: true
 
-# SWAP
+# SWAP ENV
 swap_file_path: /swapfile
 # Use any of the following suffixes
 # c=1
@@ -31,35 +31,35 @@ swap_file_path: /swapfile
 swap_file_size: 1024
 swappiness: 1
 
-# Docker
+# DOCKER ENV
 docker_apt_release_channel: stable
 docker_apt_arch: amd64
 docker_apt_repository: "deb [arch={{ docker_apt_arch }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_apt_release_channel }}"
 docker_apt_gpg_key: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
 docker_compose_version: "1.28.5"
 
-#PHP
+# PHP ENV
 php_sourcelist_path: "/etc/apt/sources.list.d/ppa_ondrej_php_{{ansible_distribution_release}}.list"
 
-# Create Users
+# CREATE USER ENV
 username: test
 password: $6$mzIBN0uPu4uF$SJYjWTNMwFPbrtkHfUnBNqzlHt8HuL/dy4.le7Ih66166tbQEPATolWe/v5PwBSISCPBcDsbW6.xa8vW84odU.
 # mkpasswd --method=sha-512 : test
 
-# MySQL
+# MYSQL ENV
 mysql_root_username: root
 mysql_root_password: root
 
-# Application & Database
+# DATABASE ENV
 app_username: yes
 app_password: yes
 app_database: yes
 
-# Apache2 / NGINX
+# WEB SERVER ENV (APACHE / NGINX)
 app_domain: yes.cmsmanajer.com
 app_config: yes.cmsmanajer.com.conf
 
-# WordPress
+# CMS WORDPRESS ENV
 app_dbprefix: wpx_
 wordpress_home_url: http://yes.cmsmanajer.com
 wordpress_site_title: CMS Manajer

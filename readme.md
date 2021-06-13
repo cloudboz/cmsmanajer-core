@@ -1,4 +1,4 @@
-# Core
+# CMS Manajer Core
 Core is tool to install application pack like LAMP, LEMP, CMS (WordPress, PrestaShop, MediaWiki, Moodle, etc).
 
 # Features

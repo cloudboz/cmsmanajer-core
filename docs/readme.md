@@ -1,8 +1,9 @@
-# Business Flow
+# What is CMS Manajer?
+CMS Manajer (Cadabra Multiple Server Manajer) is alternative WHM/cPanel with simple setup.
 
 # Requirements
 - Your server must be Ubuntu 18.04 or 20.04 (64-bit). 
-- Only clean servers (no Nginx, Apache, or MySQL installed) can be connected to CMS Manajer.
+- Only clean servers (no Nginx, Apache, or MySQL installed).
 - Installed python2.7 or python3.
 - Minimum of RAM 256MB
 
