@@ -67,8 +67,6 @@
     - wp-lemp-full-install
     - wp-lamp-create-single-app
     - wp-lemp-create-single-app
-    - wp-lamp-full-uninstall
-    - wp-lemp-full-uninstall
 
 - name: "create database user for App"
   no_log: true
@@ -85,8 +83,6 @@
     - wp-lemp-full-install
     - wp-lamp-create-single-app
     - wp-lemp-create-single-app
-    - wp-lamp-full-uninstall
-    - wp-lemp-full-uninstall
 
 # Cleanup
 - name: "uninstall mysql"
