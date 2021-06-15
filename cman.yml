@@ -1,0 +1,34 @@
+- hosts: all
+  become: true
+  gather_facts: yes
+  roles:
+    - cman-common
+    - cman-kernel
+    - cman-limits
+    - cman-swap
+    - cman-users
+    - cman-app-apache
+    - cman-app-nginx
+    - cman-app-mysql
+    - cman-app-php
+    - cman-app-docker
+    - cman-app-mongodb
+    - cman-cms-wordpress-cli
+    - cman-cms-wordpress
+  handlers:
+  - name: Reload Apache
+    service:
+      name: apache2
+      state: reloaded
+  - name: Restart Apache
+    service:
+      name: apache2
+      state: restarted
+  - name: Reload Nginx
+    service:
+      name: nginx
+      state: reloaded
+  - name: Restart Nginx
+    service:
+      name: nginx
+      state: restarted

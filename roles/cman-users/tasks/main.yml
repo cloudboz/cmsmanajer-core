@@ -1,0 +1,40 @@
+---
+- name: "create user '{{ username }}'"
+  user:
+    name: "{{ username }}"
+    password: "{{ password }}"
+    groups: sudo
+    state: present
+    shell: /bin/bash
+    system: no
+    createhome: yes
+    home: "/home/{{ username }}"
+  tags:
+    - create-system-user
+
+- name: "replace sshd_config for pass auth"
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '{{item.From}}'
+    line: '{{item.To}}'
+  with_items:
+    - { From: 'PasswordAuthentication no', To: '{{pass_auth}}'}
+  tags:
+    - create-system-user
+
+- name: "replace sshd_config for pubkey auth"
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '{{item.From}}'
+    line: '{{item.To}}'
+  with_items:
+    - { From: 'PubkeyAuthentication no', To: '{{pubkey_auth}}'}
+  tags:
+    - create-system-user
+
+- name: "reload sshd service"
+  systemd:
+    state: restarted
+    name: sshd
+  tags:
+    - create-system-user

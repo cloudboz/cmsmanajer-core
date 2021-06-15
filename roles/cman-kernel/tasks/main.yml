@@ -1,0 +1,23 @@
+---
+- name: "backup /etc/sysctl.conf"
+  shell: cp /etc/sysctl.conf /etc/sysctl.conf.backup
+  args:
+    executable: /bin/bash
+  tags:
+    - connect-server
+
+- name: "copy kernel config to /etc/sysctl.conf"
+  copy: 
+    src: "{{ item }}"
+    dest: /etc
+  with_items:
+    - sysctl.conf
+  tags:
+    - connect-server
+
+- name: "reload sysctl.conf"
+  shell: sysctl -p
+  args:
+    executable: /bin/bash
+  tags:
+    - connect-server
