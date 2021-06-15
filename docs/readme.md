@@ -19,7 +19,7 @@ ansible-playbook cman.yml --tags "create-system-user"
 ## LAMP
 ```
 ansible-playbook cman.yml --tags "lamp-full-install"
-ansible-playbook cman.yml --tags "lamp-full-uninstall"
+ansible-playbook cman.yml --tags "lamp-full-uninstall" # This command also support for delete WordPress full install (Apache)
 
 ansible-playbook cman.yml --tags "lamp-create-single-app"
 ansible-playbook cman.yml --tags "lamp-delete-single-app" # This command also support for delete WordPress single app (Apache)
@@ -27,7 +27,7 @@ ansible-playbook cman.yml --tags "lamp-delete-single-app" # This command also su
 ## LEMP
 ```
 ansible-playbook cman.yml --tags "lemp-full-install"
-ansible-playbook cman.yml --tags "lemp-full-uninstall"
+ansible-playbook cman.yml --tags "lemp-full-uninstall" # This command also support for delete WordPress full install (Nginx)
 
 ansible-playbook cman.yml --tags "lemp-create-single-app"
 ansible-playbook cman.yml --tags "lemp-delete-single-app" # This command also support for delete WordPress single app (Nginx)
@@ -42,15 +42,11 @@ ansible-playbook cman.yml --tags "mysql-delete-single-db"
 ## WordPress (Apache)
 ```
 ansible-playbook cman.yml --tags "wp-lamp-full-install"
-ansible-playbook cman.yml --tags "wp-lamp-full-uninstall"
-
 ansible-playbook cman.yml --tags "wp-lamp-create-single-app"
 ```
 ## WordPress (Nginx)
 ```
 ansible-playbook cman.yml --tags "wp-lemp-full-install"
-ansible-playbook cman.yml --tags "wp-lemp-full-uninstall"
-
 ansible-playbook cman.yml --tags "wp-lemp-create-single-app"
 ```
 ## Docker
