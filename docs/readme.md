@@ -1,60 +1,71 @@
-# Business Flow
+# What is CMS Manajer?
+CMS Manajer (Cadabra Multiple Server Manajer) is alternative WHM/cPanel with simple setup.
 
 # Requirements
 - Your server must be Ubuntu 18.04 or 20.04 (64-bit). 
-- Only clean servers (no Nginx, Apache, or MySQL installed) can be connected to CMS Manajer.
+- Only clean servers (no Nginx, Apache, or MySQL installed).
 - Installed python2.7 or python3.
 - Minimum of RAM 256MB
 
 # How to Use
+## Connect server
+```
+ansible-playbook cman.yml --tags "connect-server"
+```
+## Create system user
+```
+ansible-playbook cman.yml --tags "create-system-user"
+```
+## LAMP
+```
+ansible-playbook cman.yml --tags "lamp-full-install"
+ansible-playbook cman.yml --tags "lamp-full-uninstall" # This command also support for delete WordPress full install (Apache)
 
-## Todo
-- [ ] Generate ssh-key with  `ssh-keygen` > files/`id_rsa` & files/`id_rsa.pub`
-- [ ] Create user `cmsmanajer`
-- [ ] Copy files/`id_rsa` & files/`id_rsa.pub` > `~/.ssh/`
-- [ ] Install LEMP (Linux, Engine-X, MariaDB and PHP)
-- [ ] Install LAMP (Linux, Apache, MariaDB and PHP)
-- [ ] Install LEMP + CMS `WordPress`
-- [ ] Install SFTP
-Enabling automatic package updates.
-install postfix
-php-fpm
-testing server configuration
+ansible-playbook cman.yml --tags "lamp-create-single-app"
+ansible-playbook cman.yml --tags "lamp-delete-single-app" # This command also support for delete WordPress single app (Apache)
+```
+## LEMP
+```
+ansible-playbook cman.yml --tags "lemp-full-install"
+ansible-playbook cman.yml --tags "lemp-full-uninstall" # This command also support for delete WordPress full install (Nginx)
 
----
-
-Step by step
-
-{Koneksi vps ke cmsmanajer}
-
-- Membuat sebuah vps di salah satu provider contoh : vultr / digitalocean
-- Copy semua data username, password dan ip servernya
-- Login / Register di cmsmanajer
-- Klik tambahkan server kemudian masukkan ip, username dan password vps
-- Terdapat pilihan :
-    - Checklist - optimize your server jika ingin mengoptimasi servernya (update dan upgrade sistem, mengganti konfigurasi default menjadi optimize pada ulimit, kernel sistem).
-    - Checklist - monitoring server seperti penggunaan memory, cpu dan storage.
-    - Secara default cmsmanajer akan install sftp, membuat user baru (cmsmanajer), generate ssh-key dan copy ssh-key ke server
-
-- Melakukan git push code ansible ke repo cmsmanajer
-
----
-
-{Instalasi aplikasi pada cmsmanajer}
-
-- Pada menu apps pilih aplikasi yang akan di setup :
-    - LEMP (Linux, Engine-X, MariaDB dan PHP)
-    - LAMP (Linux, Apache2, MariaDB dan PHP)
-    - WordPress (Bisa milih Apache / Nginx)
-    - Drupal (Bisa milih Apache / Nginx)
-    - Joomla (Bisa milih Apache / Nginx)
-    - Masih banyak lagi listnya
-
-- Contoh klik install WordPres, kemudian ada pilihan Apache / Nginx.
-
-- Masukkan nama domain yang akan digunakan (bisa menggunakan subdomain / ip:port jika aplikasi lebih dari 1 pada server)
-
-- Klik deploy setelah itu akan melakukan proses setup (tunggu hingga selesai)
-
----
-
+ansible-playbook cman.yml --tags "lemp-create-single-app"
+ansible-playbook cman.yml --tags "lemp-delete-single-app" # This command also support for delete WordPress single app (Nginx)
+```
+## MySQL
+```
+ansible-playbook cman.yml --tags "mysql-install"
+ansible-playbook cman.yml --tags "mysql-uninstall"
+ansible-playbook cman.yml --tags "mysql-create-single-db"
+ansible-playbook cman.yml --tags "mysql-delete-single-db"
+```
+## WordPress (Apache)
+```
+ansible-playbook cman.yml --tags "wp-lamp-full-install"
+ansible-playbook cman.yml --tags "wp-lamp-create-single-app"
+```
+## WordPress (Nginx)
+```
+ansible-playbook cman.yml --tags "wp-lemp-full-install"
+ansible-playbook cman.yml --tags "wp-lemp-create-single-app"
+```
+## Docker
+```
+ansible-playbook cman.yml --tags "docker-install"
+ansible-playbook cman.yml --tags "docker-uninstall"
+```
+## MongoDB
+```
+ansible-playbook cman.yml --tags "mongodb-install"
+ansible-playbook cman.yml --tags "mongodb-uninstall"
+```
+## Nginx
+```
+ansible-playbook cman.yml --tags "nginx-install"
+ansible-playbook cman.yml --tags "nginx-uninstall"
+```
+## Apache
+```
+ansible-playbook cman.yml --tags "apache-install"
+ansible-playbook cman.yml --tags "apache-uninstall"
+```

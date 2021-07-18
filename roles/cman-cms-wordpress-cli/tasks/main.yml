@@ -1,0 +1,31 @@
+---
+- name: "check if wp-cli exists"
+  stat: path="/usr/bin/wp"
+  register: wpcli_exist
+  tags:
+    - wp-lamp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-create-single-app
+    - wp-lemp-create-single-app
+
+- name: "updating wp-cli"
+  shell: "/usr/bin/wp cli update --yes"
+  when: wpcli_exist.stat.exists
+  tags:
+    - wp-lamp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-create-single-app
+    - wp-lemp-create-single-app
+
+- name: "install wp-cli"
+  get_url:
+    url="https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
+    dest="/usr/bin/wp"
+    force_basic_auth=yes
+    mode=0755
+  when: not wpcli_exist.stat.exists
+  tags:
+    - wp-lamp-full-install
+    - wp-lemp-full-install
+    - wp-lamp-create-single-app
+    - wp-lemp-create-single-app

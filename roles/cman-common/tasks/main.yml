@@ -1,0 +1,32 @@
+---
+- name: "update and upgrade systems"
+  apt:
+    update_cache: yes
+    upgrade: dist
+    autoremove: yes
+  tags:
+    - connect-server
+
+- name: "install systems dependencies"
+  apt:
+    name:
+      - apt-transport-https
+      - gnupg
+      - gnupg-agent
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - build-essential
+      - net-tools
+      - htop
+      - ncdu
+      - vim
+      - nano
+      - ufw
+      - git
+      - zip
+      - unzip
+      - rsync
+    state: present
+  tags:
+    - connect-server
