@@ -154,7 +154,7 @@
     - lemp-full-uninstall
 
 - name: "Uninstall nginx"
-  apt: name={{ item }} status=absent
+  apt: name={{ item }} state=absent
   loop:
     - nginx
     - nginx-common
