@@ -65,5 +65,6 @@
   apt: 
     name: mongodb-org 
     state: absent 
+  notify: Autoremove
   tags:
     - mongodb-uninstall
