@@ -61,7 +61,7 @@
   tags:
     - mongodb-uninstall
 
-- name: "install mongodb"      
+- name: "uninstall mongodb"      
   apt: 
     name: mongodb-org 
     state: absent 
