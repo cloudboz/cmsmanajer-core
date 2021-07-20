@@ -90,6 +90,7 @@
   loop:
     - mysql-server
     - python3-pymysql
+  notify: Autoremove
   tags:
     - mysql-uninstall
 

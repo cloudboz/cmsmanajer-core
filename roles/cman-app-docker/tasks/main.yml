@@ -76,6 +76,7 @@
       - containerd.io
     state: absent
     update_cache: false
+  notify: Autoremove
   tags:
     - docker-uninstall
 
