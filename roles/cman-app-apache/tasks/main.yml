@@ -8,6 +8,14 @@
     - lamp-full-install
     - wp-lamp-full-install
 
+- name: "enable apache rewrite"
+  shell: a2enmod rewrite
+  notify: Restart Apache
+  tags:
+    - apache-install
+    - lamp-full-install
+    - wp-lamp-full-install
+    
 - name: "create folder {{ app_domain }}"
   stat:
     path: "/var/www/{{ app_domain }}"
