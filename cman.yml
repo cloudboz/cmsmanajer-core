@@ -32,3 +32,6 @@
     service:
       name: nginx
       state: restarted
+  - name: Autoremove
+    apt:
+      autoremove: yes

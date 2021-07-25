@@ -68,14 +68,16 @@
   tags:
     - docker-uninstall
 
-- name: "install docker"
+- name: "uninstall docker"
   apt:
     name:
       - docker-ce
       - docker-ce-cli
       - containerd.io
+      - docker*
     state: absent
     update_cache: false
+  notify: Autoremove
   tags:
     - docker-uninstall
 
