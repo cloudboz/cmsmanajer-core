@@ -1,9 +1,9 @@
 # ANSIBLE ENV
 ansible_connection: ssh
 ansible_user: ubuntu
-ansible_ssh_pass: 4esz3wa2q1
-ansible_sudo_pass: 4esz3wa2q1
-ansible_ssh_private_key_file: files/sgnd.pem
+ansible_ssh_pass:
+ansible_sudo_pass:
+ansible_ssh_private_key_file:
 ansible_python_interpreter: /usr/bin/python3
 
 # SSH ENV
