@@ -152,7 +152,7 @@
 
 # Cleanup
 - name: "Running command : uninstall LAMP"
-  apt: name={{ item }} status=absent
+  apt: name={{ item }} state=absent
   loop:
     - apache2
     - mysql-server
@@ -165,7 +165,7 @@
     - lamp-full-uninstall
 
 - name: "Uninstall Apache"
-  apt: name={{ item }} status=absent
+  apt: name={{ item }} state=absent
   loop:
     - apache2
   tags:
