@@ -1,37 +1,50 @@
 - hosts: all
   become: true
   gather_facts: yes
+  
   roles:
-    - cman-common
-    - cman-kernel
-    - cman-limits
-    - cman-swap
-    - cman-users
-    - cman-app-apache
-    - cman-app-nginx
-    - cman-app-mysql
-    - cman-app-php
-    - cman-app-docker
-    - cman-app-mongodb
-    - cman-cms-wordpress-cli
-    - cman-cms-wordpress
+    - sys-optimiz
+    - sys-users
+    - sys-db
+    - env-amn
+    - env-amp
+    - env-ampy
+    - env-emn
+    - env-emp
+    - env-empy
+    - app-wordpress
+
   handlers:
-  - name: Reload Apache
+  - name: start-apache
+    service:
+      name: apache2
+      state: started
+
+  - name: reload-apache
     service:
       name: apache2
       state: reloaded
-  - name: Restart Apache
+
+  - name: restart-apache
     service:
       name: apache2
       state: restarted
-  - name: Reload Nginx
+
+  - name: start-nginx
+    service:
+      name: nginx
+      state: started
+
+  - name: reload-nginx
     service:
       name: nginx
       state: reloaded
-  - name: Restart Nginx
+
+  - name: restart-nginx
     service:
       name: nginx
       state: restarted
-  - name: Autoremove
+
+  - name: autoremove
     apt:
       autoremove: yes

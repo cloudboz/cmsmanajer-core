@@ -1,71 +1,69 @@
-# What is CMS Manajer?
-CMS Manajer (Cadabra Multiple Server Manajer) is alternative WHM/cPanel with simple setup.
-
 # Requirements
-- Your server must be Ubuntu 18.04 or 20.04 (64-bit). 
-- Only clean servers (no Nginx, Apache, or MySQL installed).
-- Installed python2.7 or python3.
+- Your server must be Ubuntu version 18.04/20.04 (64-bit recommended).
+- Only clean servers (no NGINX, Apache or MySQL installed).
+- Installed python2 or python3.
 - Minimum of RAM 256MB
 
-# How to Use
-## Connect server
-```
-ansible-playbook cman.yml --tags "connect-server"
-```
-## Create system user
-```
-ansible-playbook cman.yml --tags "create-system-user"
-```
-## LAMP
-```
-ansible-playbook cman.yml --tags "lamp-full-install"
-ansible-playbook cman.yml --tags "lamp-full-uninstall" # This command also support for delete WordPress full install (Apache)
+# Environments
+- AMP (Apache, MariaDB, PHP)
+- EMP (Nginx, MariaDB, PHP)
+- AMN (Apache, MariaDB, Node.js)
+- EMN (Nginx, MariaDB, Node.js)
+- AMPy (Apache, MariaDB, Python)
+- EMPy (Nginx, MariaDB, Python)
 
-ansible-playbook cman.yml --tags "lamp-create-single-app"
-ansible-playbook cman.yml --tags "lamp-delete-single-app" # This command also support for delete WordPress single app (Apache)
+# How to Use?
+## Install environments
 ```
-## LEMP
+ansible-playbook cman.yml --tags "install-amp"
+ansible-playbook cman.yml --tags "install-emp"
+ansible-playbook cman.yml --tags "install-amn"
+ansible-playbook cman.yml --tags "install-emn"
+ansible-playbook cman.yml --tags "install-ampy"
+ansible-playbook cman.yml --tags "install-empy"
 ```
-ansible-playbook cman.yml --tags "lemp-full-install"
-ansible-playbook cman.yml --tags "lemp-full-uninstall" # This command also support for delete WordPress full install (Nginx)
 
-ansible-playbook cman.yml --tags "lemp-create-single-app"
-ansible-playbook cman.yml --tags "lemp-delete-single-app" # This command also support for delete WordPress single app (Nginx)
+## Uninstall environments
 ```
-## MySQL
+ansible-playbook cman.yml --tags "purge-amp"
+ansible-playbook cman.yml --tags "purge-emp"
+ansible-playbook cman.yml --tags "purge-amn"
+ansible-playbook cman.yml --tags "purge-emn"
+ansible-playbook cman.yml --tags "purge-ampy"
+ansible-playbook cman.yml --tags "purge-empy"
 ```
-ansible-playbook cman.yml --tags "mysql-install"
-ansible-playbook cman.yml --tags "mysql-uninstall"
-ansible-playbook cman.yml --tags "mysql-create-single-db"
-ansible-playbook cman.yml --tags "mysql-delete-single-db"
+
+## Create & delete databases
 ```
-## WordPress (Apache)
+ansible-playbook cman.yml --tags "create-db"
+ansible-playbook cman.yml --tags "delete-db"
 ```
-ansible-playbook cman.yml --tags "wp-lamp-full-install"
-ansible-playbook cman.yml --tags "wp-lamp-create-single-app"
+
+## Create & delete system user
 ```
-## WordPress (Nginx)
+ansible-playbook cman.yml --tags "create-sysuser"
+ansible-playbook cman.yml --tags "delete-sysuser"
 ```
-ansible-playbook cman.yml --tags "wp-lemp-full-install"
-ansible-playbook cman.yml --tags "wp-lemp-create-single-app"
+
+## Deploy & destroy wordpress
 ```
-## Docker
+ansible-playbook cman.yml --tags "deploy-wordpress"
+ansible-playbook cman.yml --tags "destroy-wordpress"
 ```
-ansible-playbook cman.yml --tags "docker-install"
-ansible-playbook cman.yml --tags "docker-uninstall"
+
+## Deploy & destroy joomla
 ```
-## MongoDB
+ansible-playbook cman.yml --tags "deploy-joomla"
+ansible-playbook cman.yml --tags "destroy-joomla"
 ```
-ansible-playbook cman.yml --tags "mongodb-install"
-ansible-playbook cman.yml --tags "mongodb-uninstall"
+
+## Deploy & destroy drupal
 ```
-## Nginx
+ansible-playbook cman.yml --tags "deploy-drupal"
+ansible-playbook cman.yml --tags "destroy-drupal"
 ```
-ansible-playbook cman.yml --tags "nginx-install"
-ansible-playbook cman.yml --tags "nginx-uninstall"
+
+## Deploy & destroy prestashop
 ```
-## Apache
-```
-ansible-playbook cman.yml --tags "apache-install"
-ansible-playbook cman.yml --tags "apache-uninstall"
-```
+ansible-playbook cman.yml --tags "deploy-prestashop"
+ansible-playbook cman.yml --tags "destroy-prestashop"
