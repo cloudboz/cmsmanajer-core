@@ -23,7 +23,7 @@ ansible-playbook cman.yml --tags "install-ampy"
 ansible-playbook cman.yml --tags "install-empy"
 ```
 
-## Uninstall environments
+## Purge environments
 ```
 ansible-playbook cman.yml --tags "purge-amp"
 ansible-playbook cman.yml --tags "purge-emp"

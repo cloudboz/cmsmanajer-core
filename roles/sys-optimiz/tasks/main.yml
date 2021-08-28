@@ -1,0 +1,175 @@
+---
+# CMS Manajer - Update systems
+- name: "update and upgrade systems"
+  apt:
+    update_cache: yes
+    upgrade: dist
+    autoremove: yes
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+---
+# CMS Manajer - Install recommended apps
+- name: "install systems dependencies"
+  apt:
+    name:
+      - apt-transport-https
+      - gnupg
+      - gnupg-agent
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - build-essential
+      - net-tools
+      - htop
+      - ncdu
+      - vim
+      - nano
+      - ufw
+      - git
+      - zip
+      - unzip
+      - rsync
+      - sshpass
+      - whois
+    state: present
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+---
+# CMS Manajer - Optimiz kernel
+- name: "config kernel at /etc/sysctl.conf"
+  copy: 
+    src: "{{ item }}"
+    dest: /etc
+  with_items:
+    - sysctl.conf
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "reload kernel at /etc/sysctl.conf"
+  shell: sysctl -p
+  args:
+    executable: /bin/bash
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+---
+# CMS Manajer - Swap memory
+  - name: "config ulimit at /etc/security/limits.conf"
+  copy: 
+    src: "{{ item }}"
+    dest: /etc/security
+  with_items:
+    - limits.conf
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+---
+- name: "create swap at /swapfile"
+  command: dd if=/dev/zero of={{ swap_file_path }} bs=1024 count={{ swap_file_size }} creates="{{ swap_file_path }}"
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "change permissions at /swapfile"
+  file: path="{{ swap_file_path }}"
+        owner=root
+        group=root
+        mode=0600
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "checking type at /swapfile"
+  command: file {{ swap_file_path }}
+  register: swapfile
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "make swap at /swapfile"
+  command: "sudo mkswap {{ swap_file_path }}"
+  when: swapfile.stdout.find('swap file') == -1
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "write swap entry in fstab"
+  mount: name=none
+         src={{ swap_file_path }}
+         fstype=swap
+         opts=sw
+         passno=0
+         dump=0
+         state=present
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "mount /swapfile"
+  command: "swapon {{ swap_file_path }}"
+  when: ansible_swaptotal_mb < 1
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "unmount /swapfile"
+  command: "swapoff {{ swap_file_path }}"
+  when: ansible_swaptotal_mb < 1
+  tags:
+    - purge-amp
+    - purge-emp
+    - purge-amn
+    - purge-emn
+    - purge-ampy
+    - purge-empy
