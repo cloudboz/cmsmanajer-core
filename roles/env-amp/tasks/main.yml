@@ -1,0 +1,94 @@
+---
+# CMS Manajer - Install AMP
+- name: "install requirements"
+  apt: name={{ item }}
+  loop:
+    - apache2
+    - php7.4
+    - php7.4-fpm
+    - php7.4-common
+    - php7.4-mysql
+    - php7.4-curl 
+    - php7.4-gd 
+    - php7.4-mbstring 
+    - php7.4-xml 
+    - php7.4-xmlrpc 
+    - php7.4-soap 
+    - php7.4-intl 
+    - php7.4-zip
+    - libapache2-mod-php7.4
+    - php8.0
+    - php8.0-fpm
+    - php8.0-common
+    - php8.0-mysql
+    - php8.0-curl 
+    - php8.0-gd 
+    - php8.0-mbstring 
+    - php8.0-xml 
+    - php8.0-xmlrpc 
+    - php8.0-soap 
+    - php8.0-intl 
+    - php8.0-zip
+    - libapache2-mod-php8.0
+    - mysql-server
+    - python3-pymysql
+  tags:
+    - install-amp
+
+---
+# CMS Manajer - Config apache2
+- name: "enable apache rewrite"
+  shell: a2enmod rewrite
+  notify: restart-apache
+  tags:
+    - install-amp
+
+- name: "copy index.html & info.php"
+  copy: 
+    src: "{{ item }}"
+    dest: "/var/www/"
+  with_items:
+    - index.html
+    - info.php
+  tags:
+    - install-amp
+
+- name: "replace apache rewrite"
+  replace:
+    dest=/etc/apache2/apache2.conf regexp='AllowOverride None' replace='AllowOverride All'
+  notify: restart-apache
+  tags:
+    - install-amp
+
+---
+# CMS Manajer - Config database
+- name: "sets the root password"
+  no_log: true
+  mysql_user:
+    name: "{{ mysql_root_username }}"
+    password: "{{ mysql_root_password }}"
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  tags:
+    - install-amp
+
+- name: "removes all anonymous user accounts"
+  no_log: true
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+  tags:
+    - install-amp
+
+- name: "removes the test database"
+  mysql_db:
+    name: test
+    state: absent
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+  tags:
+    - install-amp

@@ -1,0 +1,16 @@
+[Unit]
+Description=CMS Manajer Monitoring
+Wants=network-online.target
+After=network-online.target 
+
+[Service]
+Type=simple
+User=node_exporter
+Group=node_exporter
+ExecStart=/usr/local/bin/node_exporter --collector.textfile.directory=/prometheus/metrics
+Restart=always
+RestartSec=10s
+NotifyAccess=all 
+
+[Install]
+WantedBy=multi-user.target

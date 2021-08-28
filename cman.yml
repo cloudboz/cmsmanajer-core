@@ -3,15 +3,18 @@
   gather_facts: yes
   
   roles:
+    # Systems
     - sys-optimiz
-    - sys-users
+    - sys-user
     - sys-db
+    # Environments
     - env-amn
     - env-amp
     - env-ampy
     - env-emn
     - env-emp
     - env-empy
+    # Apps
     - app-wordpress
 
   handlers:
@@ -43,6 +46,21 @@
   - name: restart-nginx
     service:
       name: nginx
+      state: restarted
+
+  - name: start-monitoring
+    service:
+      name: cman
+      state: started
+
+  - name: enable-monitoring
+    service:
+      name: cman
+      state: enabled
+
+  - name: restart-monitoring
+    service:
+      name: cman
       state: restarted
 
   - name: autoremove

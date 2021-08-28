@@ -41,10 +41,18 @@ docker_compose_version: "1.28.5"
 # PHP ENV
 php_sourcelist_path: "/etc/apt/sources.list.d/ppa_ondrej_php_{{ansible_distribution_release}}.list"
 
+# MONITORING ENV
+monitoring_url : "https://github.com/prometheus/node_exporter/releases/download/v1.2.2/node_exporter-1.2.2.linux-amd64.tar.gz"
+
+# CREATE DEFAULT USER ENV
+default_username: cmsmanajer
+default_password: $6$AQVuJekcMoVQgfa8$9yRYYe2P0R59g7wGAGs4FR.iWE3O.tfBEGtOpx0CKAoU8oISlLHa7hWfirFQC/ItjnzzBMMwAGA5O.Ze3TjLA/
+# mkpasswd --method=sha-512 : AQVuJekcMoVQgfa8
+
 # CREATE USER ENV
-username: test
-password: $6$mzIBN0uPu4uF$SJYjWTNMwFPbrtkHfUnBNqzlHt8HuL/dy4.le7Ih66166tbQEPATolWe/v5PwBSISCPBcDsbW6.xa8vW84odU.
-# mkpasswd --method=sha-512 : test
+username: 
+password: 
+# mkpasswd --method=sha-512 :
 
 # MYSQL ENV
 mysql_root_username: root

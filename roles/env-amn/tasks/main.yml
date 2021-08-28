@@ -1,0 +1,61 @@
+---
+# CMS Manajer - Install AMN
+- name: "install requirements"
+  apt: name={{ item }}
+  loop:
+    - nginx
+    - mysql-server
+    - python3-pymysql
+  tags:
+    - install-amn
+
+- name: "copy index.html & info.php"
+  copy: 
+    src: "{{ item }}"
+    dest: "/var/www/"
+  with_items:
+    - index.html
+    - info.php
+  tags:
+    - install-amn
+
+---
+# CMS Manajer - Install NVM
+- name: "install nvm"
+  shell: >
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+    
+---
+# CMS Manajer - Config database
+- name: "sets the root password"
+  no_log: true
+  mysql_user:
+    name: "{{ mysql_root_username }}"
+    password: "{{ mysql_root_password }}"
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  tags:
+    - install-amn
+
+- name: "removes all anonymous user accounts"
+  no_log: true
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+  tags:
+    - install-amn
+
+- name: "removes the test database"
+  mysql_db:
+    name: test
+    state: absent
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+  tags:
+    - install-amn

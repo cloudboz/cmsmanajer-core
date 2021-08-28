@@ -1,0 +1,29 @@
+---
+# CMS Manajer - Create system user
+- name: "create user '{{ username }}'"
+  user:
+    name: "{{ username }}"
+    password: "{{ password }}"
+    groups: sudo
+    state: present
+    shell: /bin/bash
+    system: no
+    createhome: yes
+    home: "/home/{{ username }}"
+  tags:
+    - create-sysuser
+
+---
+# CMS Manajer - Delete system user
+- name: "delete user '{{ username }}'"
+  user:
+    name: "{{ username }}"
+    password: "{{ password }}"
+    groups: sudo
+    state: absent
+    shell: /bin/bash
+    system: no
+    createhome: yes
+    home: "/home/{{ username }}"
+  tags:
+    - delete-sysuser

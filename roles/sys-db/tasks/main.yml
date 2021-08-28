@@ -1,60 +1,6 @@
 ---
-- name: "install mysql"
-  apt: name={{ item }}
-  loop:
-    - mysql-server
-    - python3-pymysql
-  tags:
-    - lamp-full-install
-    - lemp-full-install
-    - wp-lemp-full-install
-    - wp-lamp-full-install
-    - mysql-install
-
-- name: "sets the root password"
-  no_log: true
-  mysql_user:
-    name: "{{ mysql_root_username }}"
-    password: "{{ mysql_root_password }}"
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
-    login_unix_socket: /var/run/mysqld/mysqld.sock
-  tags:
-    - lamp-full-install
-    - lemp-full-install
-    - wp-lemp-full-install
-    - wp-lamp-full-install
-    - mysql-install
-    
-- name: "removes all anonymous user accounts"
-  no_log: true
-  mysql_user:
-    name: ''
-    host_all: yes
-    state: absent
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
-  tags:
-    - lamp-full-install
-    - lemp-full-install
-    - wp-lemp-full-install
-    - wp-lamp-full-install
-    - mysql-install
-
-- name: "removes the test database"
-  mysql_db:
-    name: test
-    state: absent
-    login_user: "{{ mysql_root_username }}"
-    login_password: "{{ mysql_root_password }}"
-  tags:
-    - lamp-full-install
-    - lemp-full-install
-    - wp-lemp-full-install
-    - wp-lamp-full-install
-    - mysql-install
-
-- name: "creates database for App"
+# CMS Manajer - Create DB
+- name: "create database app"
   no_log: true
   mysql_db:
     name: "{{ app_database }}"
@@ -62,13 +8,9 @@
     login_user: "{{ mysql_root_username }}"
     login_password: "{{ mysql_root_password }}"
   tags:
-    - mysql-create-single-db
-    - wp-lamp-full-install
-    - wp-lemp-full-install
-    - wp-lamp-create-single-app
-    - wp-lemp-create-single-app
+    - create-db
 
-- name: "create database user for App"
+- name: "create database user"
   no_log: true
   mysql_user:
     name: "{{ app_username }}"
@@ -78,23 +20,11 @@
     login_user: "{{ mysql_root_username }}"
     login_password: "{{ mysql_root_password }}"
   tags:
-    - mysql-create-single-db
-    - wp-lamp-full-install
-    - wp-lemp-full-install
-    - wp-lamp-create-single-app
-    - wp-lemp-create-single-app
+    - create-db
 
-# Cleanup
-- name: "uninstall mysql"
-  apt: name={{ item }} state=absent
-  loop:
-    - mysql-server
-    - python3-pymysql
-  notify: Autoremove
-  tags:
-    - mysql-uninstall
-
-- name: "Running command : delete database for App"
+---
+# CMS Manajer - Delete DB
+- name: "delete database app"
   no_log: true
   mysql_db:
     name: "{{ app_database }}"
@@ -102,9 +32,9 @@
     login_user: "{{ mysql_root_username }}"
     login_password: "{{ mysql_root_password }}"
   tags:
-    - mysql-delete-single-db
+    - delete-db
 
-- name: "Running command : delete database user for App"
+- name: "delete database user"
   no_log: true
   mysql_user:
     name: "{{ app_username }}"
@@ -114,4 +44,4 @@
     login_user: "{{ mysql_root_username }}"
     login_password: "{{ mysql_root_password }}"
   tags:
-    - mysql-delete-single-db
+    - delete-db

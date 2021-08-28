@@ -74,9 +74,7 @@
     - install-ampy
     - install-empy
 
----
-# CMS Manajer - Swap memory
-  - name: "config ulimit at /etc/security/limits.conf"
+- name: "config ulimit at /etc/security/limits.conf"
   copy: 
     src: "{{ item }}"
     dest: /etc/security
@@ -91,6 +89,7 @@
     - install-empy
 
 ---
+# CMS Manajer - Swap memory
 - name: "create swap at /swapfile"
   command: dd if=/dev/zero of={{ swap_file_path }} bs=1024 count={{ swap_file_size }} creates="{{ swap_file_path }}"
   tags:
@@ -173,3 +172,94 @@
     - purge-emn
     - purge-ampy
     - purge-empy
+
+---
+# CMS Manajer - Users
+- name: "create user '{{ default_username }}'"
+  user:
+    name: "{{ default_username }}"
+    password: "{{ default_password }}"
+    groups: sudo
+    state: present
+    shell: /bin/bash
+    system: no
+    createhome: yes
+    home: "/home/{{ default_username }}"
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "replace sshd_config for pass auth"
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '{{ item.From }}'
+    line: '{{ item.To }}'
+  with_items:
+    - { From: 'PasswordAuthentication no', To: '{{ pass_auth }}'}
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "replace sshd_config for pubkey auth"
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '{{ item.From }}'
+    line: '{{ item.To }}'
+  with_items:
+    - { From: 'PubkeyAuthentication no', To: '{{ pubkey_auth }}'}
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "reload sshd service"
+  systemd:
+    state: restarted
+    name: sshd
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+---
+# CMS Manajer - Monitoring
+- name: "setup monitoring"
+  command: "mkdir /home/cmsmanajer/tmp && cd /home/cmsmanajer/tmp && wget {{ monitoring_url }} && tar xvf node_exporter-1.2.2.linux-amd64.tar.gz && cp node_exporter-1.2.2.linux-amd64/node_exporter /usr/local/bin && chown node_exporter:node_exporter /usr/local/bin/node_exporter && mkdir -p /prometheus/metrics && chown node_exporter:node_exporter /prometheus/metrics"
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "config monitoring at /lib/systemd/system/cman.service"
+  copy: 
+    src: "{{ item }}"
+    dest: /lib/systemd/system/
+  with_items:
+    - cman.service
+  notify:
+  - start-monitoring
+  - enable-monitoring
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy

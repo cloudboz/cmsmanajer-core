@@ -2,15 +2,17 @@
 - Your server must be Ubuntu version 18.04/20.04 (64-bit recommended).
 - Only clean servers (no NGINX, Apache or MySQL installed).
 - Installed python2 or python3.
-- Minimum of RAM 256MB
+- Minimum of RAM 256MB.
+- Open port 22, 80, 443, 9100.
+- Use static public IPv4.
 
 # Environments
-- AMP (Apache, MariaDB, PHP)
-- EMP (Nginx, MariaDB, PHP)
-- AMN (Apache, MariaDB, Node.js)
-- EMN (Nginx, MariaDB, Node.js)
-- AMPy (Apache, MariaDB, Python)
-- EMPy (Nginx, MariaDB, Python)
+- AMP (Apache, MySQL, PHP)
+- EMP (Nginx, MySQL, PHP)
+- AMN (Apache, MySQL, Node.js)
+- EMN (Nginx, MySQL, Node.js)
+- AMPy (Apache, MySQL, Python)
+- EMPy (Nginx, MySQL, Python)
 
 # How to Use?
 ## Install environments
