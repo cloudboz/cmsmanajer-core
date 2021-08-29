@@ -1,0 +1,36 @@
+---
+# CMS Manajer - Export App
+- name: "create backup directory"
+  shell: mkdir -p /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}
+  args:
+    executable: /bin/bash
+  tags:
+    - export-app
+
+- name: "export app"
+  shell: zip -r /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}/{{ app_name }}.zip /home/{{ sysuser }}/{{ app_name }}
+  args:
+    executable: /bin/bash
+  tags:
+    - export-app
+
+- name: "create backup directory at cmsmanajer"
+  shell: mkdir -p /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}
+  args:
+    executable: /bin/bash
+  tags:
+    - export-app
+
+- name: "clone backup to cmsmanajer"
+  fetch:
+    src: /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}/{{ app_name }}.zip
+    dest: /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}/
+  tags:
+    - export-app
+
+- name: "delete backup at client"
+  shell: rm -r /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}
+  args:
+    executable: /bin/bash
+  tags:
+    - export-app

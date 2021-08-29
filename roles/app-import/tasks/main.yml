@@ -1,0 +1,75 @@
+---
+# CMS Manajer - Import App
+- name: "create backup directory"
+  shell: mkdir -p /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}
+  args:
+    executable: /bin/bash
+  tags:
+    - import-app
+
+- name: "import app"
+  shell: zip -r /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}/{{ app_name }}.zip /home/{{ sysuser }}/{{ app_name }}
+  args:
+    executable: /bin/bash
+  tags:
+    - import-app
+
+- name: "copy backup file to client"
+  copy: 
+    src: /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}
+    dest: /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}
+  with_items:
+    - "{{ app_name }}"
+  tags:
+    - import-app
+
+- name: "extract app"
+  copy: 
+    src: /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}
+    dest: /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}
+  with_items:
+    - "{{ app_name }}"
+  tags:
+    - import-app
+
+---
+# CMS Manajer - Delete DB
+- name: "delete database app"
+  no_log: true
+  mysql_db:
+    name: "{{ app_database }}"
+    state: absent
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+  tags:
+    - delete-db
+
+- name: "create database app"
+  no_log: true
+  mysql_db:
+    name: "{{ app_database }}"
+    state: present
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+  tags:
+    - create-db
+    
+---
+# CMS Manajer - Import DB
+- name: "import database app"
+  no_log: true
+  mysql_db:
+    name: "{{ app_database }}"
+    state: import
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+    target: /home/cmsmanajer/database/{{ app_database }}.sql
+  tags:
+    - import-db
+
+- name: "delete backup at client"
+  shell: rm -r /home/cmsmanajer/backup/{{ app_name }}/{{ ansible_date_time.date }}
+  args:
+    executable: /bin/bash
+  tags:
+    - import-app
