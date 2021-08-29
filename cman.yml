@@ -14,8 +14,6 @@
     - env-emn
     - env-emp
     - env-empy
-    # Apps
-    - app-wordpress
 
   handlers:
   - name: start-apache

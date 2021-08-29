@@ -1,0 +1,12 @@
+---
+# CMS Manajer - Import DB
+- name: "import database app"
+  no_log: true
+  mysql_db:
+    name: "{{ app_database }}"
+    state: import
+    login_user: "{{ mysql_root_username }}"
+    login_password: "{{ mysql_root_password }}"
+    target: /home/cmsmanajer/database/{{ app_database }}.sql
+  tags:
+    - import-db

@@ -41,6 +41,12 @@ ansible-playbook cman.yml --tags "create-db"
 ansible-playbook cman.yml --tags "delete-db"
 ```
 
+## Import & Export databases
+```
+ansible-playbook cman.yml --tags "import-db"
+ansible-playbook cman.yml --tags "export-db"
+```
+
 ## Create & delete system user
 ```
 ansible-playbook cman.yml --tags "create-sysuser"
