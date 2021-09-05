@@ -3,8 +3,16 @@
 - Only clean servers (no NGINX, Apache or MySQL installed).
 - Installed python2 or python3.
 - Minimum of RAM 256MB.
-- Open port 22, 80, 443, 9100.
+- Open port 22, 80, 443.
 - Use static public IPv4.
+
+# Installed
+- Postfix
+- Memcached
+- Fail2ban
+- Redis
+- UFW
+- php-memcached
 
 # Environments
 - AMP (Apache, MySQL, PHP)

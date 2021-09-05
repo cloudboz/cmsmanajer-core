@@ -3,17 +3,17 @@ ansible_connection: ssh
 ansible_user: ubuntu
 ansible_ssh_pass: 4esz3wa2q1
 ansible_sudo_pass: 4esz3wa2q1
-ansible_ssh_private_key_file: files/sgnd.pem
+ansible_ssh_private_key_file: files/cmsman.pem
 ansible_python_interpreter: /usr/bin/python3
+
+# CREATE DEFAULT USER ENV
+default_username: cmsmanajer
+default_password: $6$AQVuJekcMoVQgfa8$9yRYYe2P0R59g7wGAGs4FR.iWE3O.tfBEGtOpx0CKAoU8oISlLHa7hWfirFQC/ItjnzzBMMwAGA5O.Ze3TjLA/
+# mkpasswd --method=sha-512 : AQVuJekcMoVQgfa8
 
 # SSH ENV
 pass_auth: PasswordAuthentication yes
 pubkey_auth: PubkeyAuthentication yes
-
-# FIREWALL ENV
-http_port: 80
-https_port: 443
-disable_default: true
 
 # SWAP ENV
 swap_file_path: /swapfile
@@ -28,8 +28,17 @@ swap_file_path: /swapfile
 # xM=M
 # GB=1000*1000*1000
 # G=1024*1024*1024
-swap_file_size: 1024
+swap_file_size: 2048
 swappiness: 1
+
+# MONITORING ENV
+monitoring_url : "https://github.com/prometheus/node_exporter/releases/download/v1.2.2/node_exporter-1.2.2.linux-amd64.tar.gz"
+
+# FIREWALL ENV
+http_port: 80
+https_port: 443
+ssh_port: 22
+disable_default: true
 
 # DOCKER ENV
 docker_apt_release_channel: stable

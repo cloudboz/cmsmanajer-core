@@ -6,7 +6,6 @@
     # Systems
     - sys-optimiz
     - sys-user
-    - sys-db
     # Environments
     - env-amn
     - env-amp
@@ -14,7 +13,18 @@
     - env-emn
     - env-emp
     - env-empy
-
+    # Databases
+    - db-mysql
+    - db-mysql-export
+    - db-mysql-import
+    # Apps
+    - app-wordpress
+    - app-joomla
+    - app-drupal
+    # Backup & Restore
+    - data-backup
+    - data-restore
+   
   handlers:
   - name: start-apache
     service:

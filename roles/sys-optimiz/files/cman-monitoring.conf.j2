@@ -1,0 +1,33 @@
+server {
+        server_name {{ app_domain }}.client.cmsmanajer.com;
+
+        location / {
+		proxy_pass http://localhost:9100;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+        }
+	
+	location /health {
+		default_type text/html;
+		return 200 "<!DOCTYPE html><h2>Health</h2>\n";
+		access_log off;
+	}
+
+        listen [::]:{{ https_port }} ssl http2;
+        listen {{ https_port }} ssl http2;
+        ssl_certificate /etc/letsencrypt/live/{{ app_domain }}.client.cmsmanajer.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}.client.cmsmanajer.com/privkey.pem;
+}
+
+server {
+        if ($host = {{ app_domain }}.client.cmsmanajer.com) {
+            return 301 https://$host$request_uri;
+        }
+
+        listen {{ http_port }};
+        listen [::]:{{ http_port }};
+        server_name {{ app_domain }}.client.cmsmanajer.com;
+}

@@ -1,5 +1,5 @@
 [Unit]
-Description=CMS Manajer Monitoring
+Description=CMan Monitoring
 Wants=network-online.target
 After=network-online.target 
 

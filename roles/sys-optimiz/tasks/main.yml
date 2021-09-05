@@ -22,6 +22,7 @@
       - gnupg
       - gnupg-agent
       - ca-certificates
+      - openssl
       - curl
       - software-properties-common
       - build-essential
@@ -37,6 +38,7 @@
       - rsync
       - sshpass
       - whois
+      - snapd
     state: present
   tags:
     - install-amp
@@ -193,27 +195,13 @@
     - install-ampy
     - install-empy
 
-- name: "replace sshd_config for pass auth"
+- name: "replace sshd_config for pass & pubkey auth"
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: '{{ item.From }}'
     line: '{{ item.To }}'
   with_items:
     - { From: 'PasswordAuthentication no', To: '{{ pass_auth }}'}
-  tags:
-    - install-amp
-    - install-emp
-    - install-amn
-    - install-emn
-    - install-ampy
-    - install-empy
-
-- name: "replace sshd_config for pubkey auth"
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '{{ item.From }}'
-    line: '{{ item.To }}'
-  with_items:
     - { From: 'PubkeyAuthentication no', To: '{{ pubkey_auth }}'}
   tags:
     - install-amp
@@ -238,7 +226,7 @@
 ---
 # CMS Manajer - Monitoring
 - name: "setup monitoring"
-  command: "mkdir /home/cmsmanajer/tmp && cd /home/cmsmanajer/tmp && wget {{ monitoring_url }} && tar xvf node_exporter-1.2.2.linux-amd64.tar.gz && cp node_exporter-1.2.2.linux-amd64/node_exporter /usr/local/bin && chown node_exporter:node_exporter /usr/local/bin/node_exporter && mkdir -p /prometheus/metrics && chown node_exporter:node_exporter /prometheus/metrics"
+  command: "mkdir /home/cmsmanajer/tmp; cd /home/cmsmanajer/tmp; wget {{ monitoring_url }}; tar xvf node_exporter-1.2.2.linux-amd64.tar.gz; cp node_exporter-1.2.2.linux-amd64/node_exporter /usr/local/bin; chown node_exporter:node_exporter /usr/local/bin/node_exporter; mkdir -p /prometheus/metrics; chown node_exporter:node_exporter /prometheus/metrics"
   tags:
     - install-amp
     - install-emp
@@ -247,15 +235,70 @@
     - install-ampy
     - install-empy
 
-- name: "config monitoring at /lib/systemd/system/cman.service"
+- name: "config monitoring at /lib/systemd/system/cman-monitoring.service"
   copy: 
     src: "{{ item }}"
     dest: /lib/systemd/system/
   with_items:
-    - cman.service
+    - cman-monitoring.service
   notify:
   - start-monitoring
   - enable-monitoring
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+---
+# CMS Manajer - SSL Certificate
+- name: "setup nginx for monitoring"
+  template: 
+    src: "/files/{{ item }}"
+    dest: "/etc/nginx/sites-available/{{ app_domain }}"
+  with_items:
+    - cman-monitoring.conf.j2
+  notify: reload-nginx
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "enable new site"
+  file:
+    src: "/etc/nginx/sites-available/{{ app_domain }}"
+    dest: "/etc/nginx/sites-enabled/{{ app_domain }}"
+    state: link
+  notify: reload-nginx
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "install snapd"
+  shell: sudo snap install --classic certbot; sudo ln -s /snap/bin/certbot /usr/bin/certbot
+  args:
+    executable: /bin/bash
+  tags:
+    - install-amp
+    - install-emp
+    - install-amn
+    - install-emn
+    - install-ampy
+    - install-empy
+
+- name: "generate ssl for client"
+  shell: sudo certbot certonly --standalone -d {{ app_domain }}.client.cmsmanajer.com --staple-ocsp -m cert@memoora.com --agree-tos
+  args:
+    executable: /bin/bash
   tags:
     - install-amp
     - install-emp
